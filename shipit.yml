@@ -1,0 +1,17 @@
+dependencies:
+  bundler:
+    without:
+      - default
+      - production
+      - development
+      - test
+
+fetch:
+  - curl --silent https://shipit.rubygems.org/status/version
+
+tasks:
+  restart:
+    action: Restart application
+    description: Restart Thin and Resque.
+    steps:
+      - cap $ENVIRONMENT deploy:restart
