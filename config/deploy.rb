@@ -37,10 +37,11 @@ namespace :deploy do
     end
   end
 
-  desc "Signal Thin services to restart the application"
+  desc "Signal Thin and Resque services to restart"
   task :restart do
     on roles(:app) do
       execute :sudo, 'sv', 'hup', '/etc/sv/shipit-thin-*'
+      execute :sudo, 'sv', 'quit', '/etc/sv/shipit-resque-*'
     end
   end
 
@@ -67,16 +68,6 @@ namespace :deploy do
   end
 end
 
-namespace :jobs do
-  desc "restart the job workers"
-  task :restart do
-    on roles(:app) do
-      execute :sudo, 'sv', 'quit', '/etc/sv/shipit-*-resque-*'
-    end
-  end
-end
-
 # before 'deploy:finishing', 'deploy:cron'
 # after 'deploy:finishing_rollback', 'deploy:cron'
-after 'deploy:publishing', 'jobs:restart'
 after 'deploy:log_revision', 'deploy:write_revision'
