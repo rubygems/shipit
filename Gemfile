@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '4.2.2'
-gem 'shipit-engine', github: 'Shopify/shipit-engine'
+gem 'shipit-engine', '~> 0.4.9'
 
 gem 'coffee-rails', '~> 4.1.0'
 gem 'jbuilder', '~> 2.0'
