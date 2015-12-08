@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150705181616) do
+ActiveRecord::Schema.define(version: 20151208214757) do
 
   create_table "api_clients", force: :cascade do |t|
     t.text     "permissions", limit: 65535
@@ -62,13 +62,13 @@ ActiveRecord::Schema.define(version: 20150705181616) do
   create_table "github_hooks", force: :cascade do |t|
     t.integer  "stack_id",     limit: 4
     t.integer  "github_id",    limit: 4
-    t.string   "event",        limit: 255
+    t.string   "event",        limit: 50,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "secret",       limit: 255
     t.string   "api_url",      limit: 255
     t.string   "type",         limit: 255
-    t.string   "organization", limit: 255
+    t.string   "organization", limit: 39
   end
 
   add_index "github_hooks", ["organization", "event"], name: "index_github_hooks_on_organization_and_event", unique: true, using: :btree
@@ -107,14 +107,14 @@ ActiveRecord::Schema.define(version: 20150705181616) do
   add_index "output_chunks", ["task_id"], name: "index_output_chunks_on_task_id", using: :btree
 
   create_table "stacks", force: :cascade do |t|
-    t.string   "repo_name",                limit: 255,                          null: false
-    t.string   "repo_owner",               limit: 255,                          null: false
-    t.string   "environment",              limit: 255,   default: "production", null: false
+    t.string   "repo_name",                limit: 100,                          null: false
+    t.string   "repo_owner",               limit: 39,                           null: false
+    t.string   "environment",              limit: 50,    default: "production", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "branch",                   limit: 255,   default: "master",     null: false
     t.string   "deploy_url",               limit: 255
-    t.string   "lock_reason",              limit: 255
+    t.string   "lock_reason",              limit: 4096
     t.integer  "tasks_count",              limit: 4,     default: 0,            null: false
     t.boolean  "continuous_deployment",                  default: false,        null: false
     t.integer  "undeployed_commits_count", limit: 4,     default: 0,            null: false
@@ -139,34 +139,39 @@ ActiveRecord::Schema.define(version: 20150705181616) do
   add_index "statuses", ["commit_id"], name: "index_statuses_on_commit_id", using: :btree
 
   create_table "tasks", force: :cascade do |t|
-    t.integer  "stack_id",        limit: 4,                            null: false
-    t.integer  "since_commit_id", limit: 4,                            null: false
-    t.integer  "until_commit_id", limit: 4,                            null: false
-    t.string   "status",          limit: 255,      default: "pending", null: false
+    t.integer  "stack_id",              limit: 4,                            null: false
+    t.integer  "since_commit_id",       limit: 4,                            null: false
+    t.integer  "until_commit_id",       limit: 4,                            null: false
+    t.string   "status",                limit: 10,       default: "pending", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id",         limit: 4
-    t.boolean  "rolled_up",                        default: false,     null: false
-    t.string   "type",            limit: 255
-    t.integer  "parent_id",       limit: 4
-    t.integer  "additions",       limit: 4,        default: 0
-    t.integer  "deletions",       limit: 4,        default: 0
-    t.text     "definition",      limit: 65535
-    t.binary   "gzip_output",     limit: 16777215
+    t.integer  "user_id",               limit: 4
+    t.boolean  "rolled_up",                              default: false,     null: false
+    t.string   "type",                  limit: 10
+    t.integer  "parent_id",             limit: 4
+    t.integer  "additions",             limit: 4,        default: 0
+    t.integer  "deletions",             limit: 4,        default: 0
+    t.text     "definition",            limit: 65535
+    t.binary   "gzip_output",           limit: 16777215
+    t.boolean  "rollback_once_aborted",                  default: false,     null: false
+    t.text     "env",                   limit: 65535
+    t.integer  "confirmations",         limit: 4,        default: 0,         null: false
   end
 
   add_index "tasks", ["rolled_up", "created_at", "status"], name: "index_tasks_on_rolled_up_and_created_at_and_status", using: :btree
   add_index "tasks", ["since_commit_id"], name: "index_tasks_on_since_commit_id", using: :btree
   add_index "tasks", ["stack_id"], name: "index_tasks_on_stack_id", using: :btree
+  add_index "tasks", ["type", "stack_id", "parent_id"], name: "index_tasks_by_stack_and_parent", using: :btree
+  add_index "tasks", ["type", "stack_id", "status"], name: "index_tasks_by_stack_and_status", using: :btree
   add_index "tasks", ["until_commit_id"], name: "index_tasks_on_until_commit_id", using: :btree
   add_index "tasks", ["user_id"], name: "index_tasks_on_user_id", using: :btree
 
   create_table "teams", force: :cascade do |t|
     t.integer  "github_id",    limit: 4
     t.string   "api_url",      limit: 255
-    t.string   "slug",         limit: 255
+    t.string   "slug",         limit: 50
     t.string   "name",         limit: 255
-    t.string   "organization", limit: 255
+    t.string   "organization", limit: 39
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
   end
@@ -177,7 +182,7 @@ ActiveRecord::Schema.define(version: 20150705181616) do
     t.integer  "github_id",  limit: 4
     t.string   "name",       limit: 255, null: false
     t.string   "email",      limit: 255
-    t.string   "login",      limit: 255
+    t.string   "login",      limit: 39
     t.string   "api_url",    limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
