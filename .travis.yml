@@ -1,0 +1,7 @@
+language: ruby
+
+cache:
+  bundler: true
+
+rvm:
+  - 2.2.4
