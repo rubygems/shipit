@@ -3,7 +3,7 @@ lock '3.4.0'
 set :bundle_bins, fetch(:bundle_bins, []).push('whenever')
 
 set :application, 'shipit'
-set :repo_url, 'git@github.com:rubygems/shipit.git'
+set :repo_url, 'https://github.com/rubygems/shipit.git'
 set :branch, ENV['SHA'] || ENV['REVISION'] || ENV['BRANCH_NAME'] || 'master'
 
 set :deploy_to, '/applications/shipit'
