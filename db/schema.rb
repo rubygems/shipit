@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151208214757) do
+ActiveRecord::Schema.define(version: 20160305140726) do
 
   create_table "api_clients", force: :cascade do |t|
     t.text     "permissions", limit: 65535
@@ -23,6 +23,29 @@ ActiveRecord::Schema.define(version: 20151208214757) do
   end
 
   add_index "api_clients", ["creator_id"], name: "index_api_clients_on_creator_id", using: :btree
+
+  create_table "commit_deployment_statuses", force: :cascade do |t|
+    t.integer  "commit_deployment_id", limit: 4
+    t.string   "status",               limit: 255
+    t.integer  "github_id",            limit: 4
+    t.string   "api_url",              limit: 255
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+  end
+
+  add_index "commit_deployment_statuses", ["commit_deployment_id"], name: "index_commit_deployment_statuses_on_commit_deployment_id", using: :btree
+
+  create_table "commit_deployments", force: :cascade do |t|
+    t.integer  "commit_id",  limit: 4
+    t.integer  "task_id",    limit: 4
+    t.integer  "github_id",  limit: 4
+    t.string   "api_url",    limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "commit_deployments", ["commit_id", "task_id"], name: "index_commit_deployments_on_commit_id_and_task_id", unique: true, using: :btree
+  add_index "commit_deployments", ["task_id"], name: "index_commit_deployments_on_task_id", using: :btree
 
   create_table "commits", force: :cascade do |t|
     t.integer  "stack_id",     limit: 4,                     null: false
@@ -76,7 +99,7 @@ ActiveRecord::Schema.define(version: 20151208214757) do
 
   create_table "hooks", force: :cascade do |t|
     t.integer  "stack_id",     limit: 4
-    t.string   "url",          limit: 4096,                  null: false
+    t.string   "delivery_url", limit: 4096,                  null: false
     t.string   "content_type", limit: 4,    default: "json", null: false
     t.string   "secret",       limit: 255
     t.string   "events",       limit: 255,  default: "",     null: false
@@ -147,7 +170,7 @@ ActiveRecord::Schema.define(version: 20151208214757) do
     t.datetime "updated_at"
     t.integer  "user_id",               limit: 4
     t.boolean  "rolled_up",                              default: false,     null: false
-    t.string   "type",                  limit: 10
+    t.string   "type",                  limit: 20
     t.integer  "parent_id",             limit: 4
     t.integer  "additions",             limit: 4,        default: 0
     t.integer  "deletions",             limit: 4,        default: 0
@@ -156,6 +179,7 @@ ActiveRecord::Schema.define(version: 20151208214757) do
     t.boolean  "rollback_once_aborted",                  default: false,     null: false
     t.text     "env",                   limit: 65535
     t.integer  "confirmations",         limit: 4,        default: 0,         null: false
+    t.boolean  "allow_concurrency",                      default: false,     null: false
   end
 
   add_index "tasks", ["rolled_up", "created_at", "status"], name: "index_tasks_on_rolled_up_and_created_at_and_status", using: :btree
@@ -179,14 +203,16 @@ ActiveRecord::Schema.define(version: 20151208214757) do
   add_index "teams", ["organization", "slug"], name: "index_teams_on_organization_and_slug", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.integer  "github_id",  limit: 4
-    t.string   "name",       limit: 255, null: false
-    t.string   "email",      limit: 255
-    t.string   "login",      limit: 39
-    t.string   "api_url",    limit: 255
+    t.integer  "github_id",                        limit: 4
+    t.string   "name",                             limit: 255, null: false
+    t.string   "email",                            limit: 255
+    t.string   "login",                            limit: 39
+    t.string   "api_url",                          limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "avatar_url", limit: 255
+    t.string   "avatar_url",                       limit: 255
+    t.string   "encrypted_github_access_token",    limit: 255
+    t.string   "encrypted_github_access_token_iv", limit: 255
   end
 
   add_index "users", ["login"], name: "index_users_on_login", using: :btree
@@ -200,6 +226,9 @@ ActiveRecord::Schema.define(version: 20151208214757) do
     t.string   "secret",     limit: 255
   end
 
+  add_foreign_key "commit_deployment_statuses", "commit_deployments"
+  add_foreign_key "commit_deployments", "commits"
+  add_foreign_key "commit_deployments", "tasks"
   add_foreign_key "memberships", "teams"
   add_foreign_key "memberships", "users"
 end

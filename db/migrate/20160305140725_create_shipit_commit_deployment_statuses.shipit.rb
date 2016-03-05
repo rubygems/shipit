@@ -1,0 +1,13 @@
+# This migration comes from shipit (originally 20160303170913)
+class CreateShipitCommitDeploymentStatuses < ActiveRecord::Migration
+  def change
+    create_table :commit_deployment_statuses do |t|
+      t.references :commit_deployment, index: true, foreign_key: true
+      t.string :status
+      t.integer :github_id
+      t.string :api_url
+
+      t.timestamps null: false
+    end
+  end
+end
