@@ -12,7 +12,7 @@ gem 'resque', '1.26.pre.0', require: %w(resque resque/server)
 gem 'sass-rails', '~> 5.0'
 gem 'thin'
 gem 'turbolinks'
-gem 'uglifier', '>= 1.3.0'
+gem 'uglifier', '~> 2.7.2'
 
 group :development, :test do
   gem 'byebug'
