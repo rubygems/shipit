@@ -1,4 +1,4 @@
-lock '3.4.0'
+lock '3.7.2'
 
 set :bundle_bins, fetch(:bundle_bins, []).push('whenever')
 

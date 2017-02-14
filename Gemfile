@@ -1,21 +1,29 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 4.2.5'
-gem 'shipit-engine', '~> 0.8.1'
+git_source(:github) do |repo_name|
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  "https://github.com/#{repo_name}.git"
+end
 
-gem 'coffee-rails', '~> 4.1.0'
-gem 'jquery-rails'
+gem 'shipit-engine', '~> 0.15.0'
+gem 'rails', '~> 5.0.1'
+
+gem 'thin'
+gem 'rack'
 gem 'mysql2'
 gem 'redis-rails'
+gem 'sinatra', '2.0.0.beta2'
 gem 'resque', '1.26.pre.0', require: %w(resque resque/server)
-gem 'sass-rails', '~> 5.0'
-gem 'thin'
-gem 'turbolinks'
+gem 'hashie', '~> 3.4.6'
 gem 'uglifier', '~> 2.7.2'
 
+group :development do
+  gem 'web-console', '>= 3.3.0'
+  gem 'listen', '~> 3.0.5'
+end
+
 group :development, :test do
-  gem 'byebug'
-  gem 'web-console', '~> 2.0'
+  gem 'byebug', platform: :mri
 end
 
 group :deploy do
