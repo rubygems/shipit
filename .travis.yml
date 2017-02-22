@@ -1,7 +1,13 @@
 language: ruby
 
+services:
+  - mysql
+
 cache:
   bundler: true
 
 rvm:
   - 2.3.3
+
+script:
+  - bundle exec rails db:create db:schema:load test
