@@ -5,8 +5,8 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'shipit-engine', '~> 0.15.0'
-gem 'rails', '~> 5.0.1'
+gem 'shipit-engine', '~> 0.18.0'
+gem 'rails', '~> 5.1.0'
 
 gem 'thin'
 gem 'rack'
