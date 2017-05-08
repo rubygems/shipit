@@ -1,5 +1,5 @@
 # This migration comes from shipit (originally 20160303170913)
-class CreateShipitCommitDeploymentStatuses < ActiveRecord::Migration
+class CreateShipitCommitDeploymentStatuses < ActiveRecord::Migration[4.2]
   def change
     create_table :commit_deployment_statuses do |t|
       t.references :commit_deployment, index: true, foreign_key: true

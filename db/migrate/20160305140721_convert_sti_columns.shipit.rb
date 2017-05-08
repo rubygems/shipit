@@ -1,5 +1,5 @@
 # This migration comes from shipit (originally 20160104151833)
-class ConvertStiColumns < ActiveRecord::Migration
+class ConvertStiColumns < ActiveRecord::Migration[4.2]
   def up
     Shipit::Task.where(type: 'Task').update_all(type: 'Shipit::Task')
     Shipit::Task.where(type: 'Deploy').update_all(type: 'Shipit::Deploy')
