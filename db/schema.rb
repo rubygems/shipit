@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170507180548) do
+ActiveRecord::Schema.define(version: 20181014202523) do
 
   create_table "api_clients", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin" do |t|
     t.text "permissions", limit: 16777215
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 20170507180548) do
     t.index ["author_id"], name: "index_commits_on_author_id"
     t.index ["committer_id"], name: "index_commits_on_committer_id"
     t.index ["created_at"], name: "index_commits_on_created_at"
+    t.index ["sha", "stack_id"], name: "index_commits_on_sha_and_stack_id", unique: true
     t.index ["stack_id"], name: "index_commits_on_stack_id"
   end
 
@@ -79,9 +80,8 @@ ActiveRecord::Schema.define(version: 20170507180548) do
     t.datetime "delivered_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["created_at"], name: "index_deliveries_on_created_at"
     t.index ["hook_id", "event", "status"], name: "index_deliveries_on_hook_id_and_event_and_status"
-    t.index ["status", "event"], name: "index_deliveries_on_status_and_event"
+    t.index ["hook_id", "status"], name: "index_deliveries_on_hook_id_and_status"
   end
 
   create_table "github_hooks", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin" do |t|
@@ -147,8 +147,12 @@ ActiveRecord::Schema.define(version: 20170507180548) do
     t.string "branch"
     t.datetime "revalidated_at"
     t.datetime "merged_at"
+    t.string "base_ref", limit: 1024
+    t.integer "base_commit_id"
+    t.index ["base_commit_id"], name: "fk_rails_eda2bf836a"
     t.index ["head_id"], name: "index_pull_requests_on_head_id"
     t.index ["merge_requested_by_id"], name: "index_pull_requests_on_merge_requested_by_id"
+    t.index ["merge_status"], name: "index_pull_requests_on_merge_status"
     t.index ["stack_id", "github_id"], name: "index_pull_requests_on_stack_id_and_github_id", unique: true
     t.index ["stack_id", "merge_status"], name: "index_pull_requests_on_stack_id_and_merge_status"
     t.index ["stack_id", "number"], name: "index_pull_requests_on_stack_id_and_number", unique: true
@@ -212,12 +216,14 @@ ActiveRecord::Schema.define(version: 20170507180548) do
     t.boolean "allow_concurrency", default: false, null: false
     t.datetime "started_at"
     t.datetime "ended_at"
+    t.boolean "ignored_safeties", default: false, null: false
+    t.integer "aborted_by_id"
     t.index ["rolled_up", "created_at", "status"], name: "index_tasks_on_rolled_up_and_created_at_and_status"
     t.index ["since_commit_id"], name: "index_tasks_on_since_commit_id"
     t.index ["stack_id", "allow_concurrency", "status"], name: "index_active_tasks"
     t.index ["stack_id", "allow_concurrency"], name: "index_tasks_on_stack_id_and_allow_concurrency"
+    t.index ["stack_id", "status", "type"], name: "index_tasks_by_stack_and_status"
     t.index ["type", "stack_id", "parent_id"], name: "index_tasks_by_stack_and_parent"
-    t.index ["type", "stack_id", "status"], name: "index_tasks_by_stack_and_status"
     t.index ["until_commit_id"], name: "index_tasks_on_until_commit_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
@@ -254,6 +260,7 @@ ActiveRecord::Schema.define(version: 20170507180548) do
   add_foreign_key "commit_deployments", "tasks"
   add_foreign_key "memberships", "teams"
   add_foreign_key "memberships", "users"
+  add_foreign_key "pull_requests", "commits", column: "base_commit_id"
   add_foreign_key "pull_requests", "commits", column: "head_id"
   add_foreign_key "pull_requests", "stacks"
   add_foreign_key "pull_requests", "users", column: "merge_requested_by_id"
