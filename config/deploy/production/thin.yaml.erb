@@ -1,0 +1,124 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thin
+  annotations:
+    shipit.shopify.io/restart: 'true'
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 0%
+  selector:
+    matchLabels:
+      name: thin
+  template:
+    metadata:
+      labels:
+        name: thin
+    spec:
+      containers:
+      - name: thin
+        image: quay.io/rubygems/shipit:<%= current_sha %>
+        args:
+        - "thin"
+        - "--rackup"
+        - "config.ru"
+        - "--address"
+        - "0.0.0.0"
+        - "--port"
+        - "3000"
+        - "--environment"
+        - "production"
+        - "--timeout"
+        - "30"
+        - "--max-conns"
+        - "1024"
+        - "--max-persistent-conns"
+        - "100"
+        - "start"
+        ports:
+        - containerPort: 3000
+          name: http-thin
+        # readinessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: 3000
+        #     httpHeaders:
+        #     - name: X-Forwarded-Proto
+        #       value: https
+        #     scheme: HTTP
+        #   initialDelaySeconds: 20
+        #   periodSeconds: 5
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1.5Gi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+        env:
+          - name: RAILS_ENV
+            value: "production"
+          - name: ENV
+            value: "production"
+          # - name: STATSD_IMPLEMENTATION
+          #   value: "datadog"
+          # - name: STATSD_HOST
+          #   valueFrom:
+          #     fieldRef:
+          #       apiVersion: v1
+          #       fieldPath: status.hostIP
+          # - name: STATSD_ADDR
+          #   value: $(STATSD_HOST):8125
+          - name: SECRET_KEY_BASE
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: secret_key_base
+          - name: RAILS_SERVE_STATIC_FILES
+            value: "true"
+          - name: RAILS_LOG_TO_STDOUT
+            value: "true"
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: database_url
+          - name: REDIS_URL
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: redis_url
+          - name: SHIPIT_HOST
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: shipit_host
+          - name: SHIPIT_HOME_DIR
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: shipit_home_dir
+          - name: GITHUB_OAUTH_ID
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: github_oauth_id
+          - name: GITHUB_OAUTH_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: github_oauth_secret
+          - name: GITHUB_API_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: github_api_token
+        securityContext:
+          privileged: false
+        lifecycle:
+          preStop:
+            exec:
+              command: ["sleep", "5"]

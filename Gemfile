@@ -26,9 +26,6 @@ group :development, :test do
   gem 'byebug', platform: :mri
 end
 
-group :deploy do
-  gem 'capistrano-bundler'
-  gem 'capistrano-rails'
-  gem 'capistrano'
-  gem 'whenever'
-end
+# group :development, :deploy do
+#   gem 'kubernetes-deploy', '~> 0.20.6', require: false
+# end

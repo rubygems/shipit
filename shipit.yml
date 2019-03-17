@@ -1,17 +1,18 @@
-dependencies:
-  bundler:
-    without:
-      - default
-      - production
-      - development
-      - test
+machine:
+  environment:
+    KUBECONFIG: /home/deploy/.kube/config
 
-fetch:
-  - curl --silent https://shipit.rubygems.org/status/version
+deploy:
+  override:
+    - bundle exec kubernetes-deploy shipit rubygems --template-dir config/deploy/$ENVIRONMENT
+
+rollback:
+  override:
+    - bundle exec kubernetes-deploy shipit rubygems --template-dir config/deploy/$ENVIRONMENT
 
 tasks:
   restart:
     action: Restart application
-    description: Restart Thin and Resque.
+    description: Trigger the restart of both http and background job workers
     steps:
-      - cap $ENVIRONMENT deploy:restart
+      - bundle exec kubernetes-restart shipit rubygems
