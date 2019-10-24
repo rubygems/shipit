@@ -1,5 +1,5 @@
 # This migration comes from shipit (originally 20160324155046)
-class AddStartedAtAndEndedAtOnTasks < ActiveRecord::Migration
+class AddStartedAtAndEndedAtOnTasks < ActiveRecord::Migration[4.2]
   def up
     add_column :tasks, :started_at, :datetime, null: true
     add_column :tasks, :ended_at, :datetime, null: true
