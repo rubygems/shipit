@@ -1,5 +1,5 @@
-# FROM ruby:2.3-alpine
-FROM ruby@sha256:a668c39a8a91944269c31bf6aca3b94e0f1e9bed6d7a156aa54b2bfb6d56e98b
+# FROM ruby:2.4-alpine
+FROM ruby@sha256:79d055e4cebda14ea4afc33cd2793dc307721a381a0f96a6a5a51d31a0abdce7
 
 RUN apk update && apk --update add \
   ruby-io-console \
