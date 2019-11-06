@@ -14,3 +14,9 @@ jobs:
       run: echo "${{ github.sha }}" > REVISION
     - name: Build the Docker image
       run: docker build . --tag quay.io/rubygems/shipit:${{ github.sha }}
+    - name: Docker login
+      if: github.ref == 'refs/heads/master'
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin quay.io
+    - name: Push Docker image
+      if: github.ref == 'refs/heads/master'
+      run: docker push quay.io/rubygems/shipit:${{ github.sha }}
