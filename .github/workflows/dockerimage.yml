@@ -1,0 +1,16 @@
+name: Docker Image
+
+on: [push]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set REVISION
+      run: echo "{{github.sha}}" > REVISION
+    - name: Build the Docker image
+      run: docker build . --tag quay.io/rubygems/shipit:{{github.sha}}
