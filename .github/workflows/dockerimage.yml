@@ -11,6 +11,6 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Set REVISION
-      run: echo "{{github.sha}}" > REVISION
+      run: echo "${{ github.sha }}" > REVISION
     - name: Build the Docker image
-      run: docker build . --tag quay.io/rubygems/shipit:{{github.sha}}
+      run: docker build . --tag quay.io/rubygems/shipit:${{ github.sha }}
