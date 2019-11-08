@@ -7,7 +7,7 @@ cache:
   bundler: true
 
 rvm:
-  - 2.4.4
+  - 2.5.7
 
 script:
   - bundle exec rails db:create db:schema:load test

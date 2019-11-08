@@ -1,5 +1,5 @@
-# FROM ruby:2.4-alpine
-FROM ruby@sha256:79d055e4cebda14ea4afc33cd2793dc307721a381a0f96a6a5a51d31a0abdce7
+# FROM ruby:2.5-alpine
+FROM ruby@sha256:b752ec96b4f33c31f0081b1b7b23761c0de9fb1322ad8c621aa8731ee1c3ab86
 
 RUN apk update && apk --update add \
   ruby-io-console \
@@ -23,7 +23,8 @@ RUN apk --update add \
   openssh-client \
   bash \
   && gem install bundler && \
-  cd /app ; bundle install --without development test deploy
+  cd /app ; bundle install --without development test && \
+  gem install kubernetes-deploy --no-document --version=0.30.0
 
 COPY . /app
 
