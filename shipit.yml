@@ -1,18 +1,7 @@
-machine:
-  environment:
-    KUBECONFIG: /home/deploy/.kube/config
-
-deploy:
+dependencies:
   override:
-    - kubernetes-deploy shipit rubygems --template-dir config/deploy/$ENVIRONMENT
+    - true
 
-rollback:
-  override:
-    - kubernetes-deploy shipit rubygems --template-dir config/deploy/$ENVIRONMENT
-
-tasks:
-  restart:
-    action: Restart application
-    description: Trigger the restart of both http and background job workers
-    steps:
-      - kubernetes-restart shipit rubygems
+kubernetes:
+  namespace: shipit
+  context: rubygems
