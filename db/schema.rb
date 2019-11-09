@@ -2,18 +2,18 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `rails
+# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181014202523) do
+ActiveRecord::Schema.define(version: 2018_10_14_202523) do
 
-  create_table "api_clients", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin" do |t|
-    t.text "permissions", limit: 16777215
+  create_table "api_clients", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.text "permissions"
     t.integer "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20181014202523) do
     t.index ["creator_id"], name: "index_api_clients_on_creator_id"
   end
 
-  create_table "commit_deployment_statuses", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin" do |t|
+  create_table "commit_deployment_statuses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "commit_deployment_id"
     t.string "status"
     t.integer "github_id"
@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20181014202523) do
     t.index ["commit_deployment_id"], name: "index_commit_deployment_statuses_on_commit_deployment_id"
   end
 
-  create_table "commit_deployments", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin" do |t|
+  create_table "commit_deployments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "commit_id"
     t.integer "task_id"
     t.integer "github_id"
@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 20181014202523) do
     t.index ["task_id"], name: "index_commit_deployments_on_task_id"
   end
 
-  create_table "commits", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin" do |t|
+  create_table "commits", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "stack_id", null: false
     t.integer "author_id", null: false
     t.integer "committer_id", null: false
@@ -67,16 +67,16 @@ ActiveRecord::Schema.define(version: 20181014202523) do
     t.index ["stack_id"], name: "index_commits_on_stack_id"
   end
 
-  create_table "deliveries", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin" do |t|
+  create_table "deliveries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "hook_id", null: false
     t.string "status", limit: 50, default: "pending", null: false
     t.string "url", limit: 4096, null: false
     t.string "content_type", null: false
     t.string "event", limit: 50, null: false
-    t.text "payload", limit: 4294967295, null: false
+    t.text "payload", size: :medium, null: false
     t.integer "response_code"
-    t.text "response_headers", limit: 16777215
-    t.text "response_body", limit: 16777215
+    t.text "response_headers"
+    t.text "response_body"
     t.datetime "delivered_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(version: 20181014202523) do
     t.index ["hook_id", "status"], name: "index_deliveries_on_hook_id_and_status"
   end
 
-  create_table "github_hooks", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin" do |t|
+  create_table "github_hooks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "stack_id"
     t.integer "github_id"
     t.string "event", limit: 50, null: false
@@ -98,7 +98,7 @@ ActiveRecord::Schema.define(version: 20181014202523) do
     t.index ["stack_id", "event"], name: "index_github_hooks_on_stack_id_and_event", unique: true
   end
 
-  create_table "hooks", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin" do |t|
+  create_table "hooks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "stack_id"
     t.string "delivery_url", limit: 4096, null: false
     t.string "content_type", limit: 4, default: "json", null: false
@@ -110,7 +110,7 @@ ActiveRecord::Schema.define(version: 20181014202523) do
     t.index ["stack_id"], name: "index_hooks_on_stack_id"
   end
 
-  create_table "memberships", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin" do |t|
+  create_table "memberships", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "team_id"
     t.integer "user_id"
     t.datetime "created_at", null: false
@@ -119,15 +119,15 @@ ActiveRecord::Schema.define(version: 20181014202523) do
     t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 
-  create_table "output_chunks", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin" do |t|
+  create_table "output_chunks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "task_id"
-    t.text "text", limit: 4294967295
+    t.text "text", size: :medium
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["task_id"], name: "index_output_chunks_on_task_id"
   end
 
-  create_table "pull_requests", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin" do |t|
+  create_table "pull_requests", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "stack_id", null: false
     t.integer "number", null: false
     t.string "title", limit: 256
@@ -159,7 +159,7 @@ ActiveRecord::Schema.define(version: 20181014202523) do
     t.index ["stack_id"], name: "index_pull_requests_on_stack_id"
   end
 
-  create_table "stacks", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin" do |t|
+  create_table "stacks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.string "repo_name", limit: 100, null: false
     t.string "repo_owner", limit: 39, null: false
     t.string "environment", limit: 50, default: "production", null: false
@@ -171,7 +171,7 @@ ActiveRecord::Schema.define(version: 20181014202523) do
     t.integer "tasks_count", default: 0, null: false
     t.boolean "continuous_deployment", default: false, null: false
     t.integer "undeployed_commits_count", default: 0, null: false
-    t.text "cached_deploy_spec", limit: 16777215
+    t.text "cached_deploy_spec"
     t.integer "lock_author_id"
     t.boolean "ignore_ci"
     t.datetime "inaccessible_since"
@@ -183,10 +183,10 @@ ActiveRecord::Schema.define(version: 20181014202523) do
     t.index ["repo_owner", "repo_name", "environment"], name: "stack_unicity", unique: true
   end
 
-  create_table "statuses", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin" do |t|
+  create_table "statuses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.string "state"
     t.string "target_url"
-    t.text "description", limit: 16777215
+    t.text "description"
     t.string "context", default: "default", null: false
     t.integer "commit_id"
     t.datetime "created_at"
@@ -195,7 +195,7 @@ ActiveRecord::Schema.define(version: 20181014202523) do
     t.index ["commit_id"], name: "index_statuses_on_commit_id"
   end
 
-  create_table "tasks", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin" do |t|
+  create_table "tasks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "stack_id", null: false
     t.integer "since_commit_id", null: false
     t.integer "until_commit_id", null: false
@@ -208,10 +208,10 @@ ActiveRecord::Schema.define(version: 20181014202523) do
     t.integer "parent_id"
     t.integer "additions", default: 0
     t.integer "deletions", default: 0
-    t.text "definition", limit: 16777215
-    t.binary "gzip_output", limit: 16777215
+    t.text "definition"
+    t.binary "gzip_output", size: :medium
     t.boolean "rollback_once_aborted", default: false, null: false
-    t.text "env", limit: 16777215
+    t.text "env"
     t.integer "confirmations", default: 0, null: false
     t.boolean "allow_concurrency", default: false, null: false
     t.datetime "started_at"
@@ -228,7 +228,7 @@ ActiveRecord::Schema.define(version: 20181014202523) do
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
-  create_table "teams", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin" do |t|
+  create_table "teams", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "github_id"
     t.string "api_url"
     t.string "slug", limit: 50
@@ -239,7 +239,7 @@ ActiveRecord::Schema.define(version: 20181014202523) do
     t.index ["organization", "slug"], name: "index_teams_on_organization_and_slug", unique: true
   end
 
-  create_table "users", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin" do |t|
+  create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "github_id"
     t.string "name", null: false
     t.string "email"

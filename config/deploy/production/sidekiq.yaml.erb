@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: resque
+  name: sidekiq
   annotations:
     shipit.shopify.io/restart: 'true'
 spec:
@@ -12,16 +12,16 @@ spec:
       maxUnavailable: 50%
   selector:
     matchLabels:
-      name: resque
+      name: sidekiq
   template:
     metadata:
       labels:
-        name: resque
+        name: sidekiq
     spec:
       containers:
-      - name: resque
+      - name: sidekiq
         image: quay.io/rubygems/shipit:<%= current_sha %>
-        args: ["bundle", "exec", "rake", "environment", "resque:work"]
+        args: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
         resources:
           requests:
             cpu: 200m
@@ -83,10 +83,26 @@ spec:
               secretKeyRef:
                 name: production
                 key: github_api_token
-          - name: QUEUE
-            value: "deploys,default,*"
-          - name: VERBOSE
-            value: "1"
+          - name: GITHUB_APP_ID
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: github_app_id
+          - name: GITHUB_INSTALLATION_ID
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: github_installation_id
+          - name: GITHUB_WEBHOOK_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: github_webhook_secret
+          - name: GITHUB_PRIVATE_KEY
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: github_private_key
         securityContext:
           privileged: false
         volumeMounts:

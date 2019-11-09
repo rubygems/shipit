@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: thin
+  name: puma
   annotations:
     shipit.shopify.io/restart: 'true'
 spec:
@@ -12,35 +12,19 @@ spec:
       maxUnavailable: 0%
   selector:
     matchLabels:
-      name: thin
+      name: puma
   template:
     metadata:
       labels:
-        name: thin
+        name: puma
     spec:
       containers:
-      - name: thin
+      - name: puma
         image: quay.io/rubygems/shipit:<%= current_sha %>
-        args:
-        - "thin"
-        - "--rackup"
-        - "config.ru"
-        - "--address"
-        - "0.0.0.0"
-        - "--port"
-        - "3000"
-        - "--environment"
-        - "production"
-        - "--timeout"
-        - "30"
-        - "--max-conns"
-        - "1024"
-        - "--max-persistent-conns"
-        - "100"
-        - "start"
+        args: ["bundle", "exec", "puma"]
         ports:
         - containerPort: 3000
-          name: http-thin
+          name: http-puma
         # readinessProbe:
         #   httpGet:
         #     path: /
@@ -63,6 +47,10 @@ spec:
             value: "production"
           - name: ENV
             value: "production"
+          - name: WORKERS
+            value: '4'
+          - name: THREADS
+            value: '2'
           # - name: STATSD_IMPLEMENTATION
           #   value: "datadog"
           # - name: STATSD_HOST
@@ -116,6 +104,26 @@ spec:
               secretKeyRef:
                 name: production
                 key: github_api_token
+          - name: GITHUB_APP_ID
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: github_app_id
+          - name: GITHUB_INSTALLATION_ID
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: github_installation_id
+          - name: GITHUB_WEBHOOK_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: github_webhook_secret
+          - name: GITHUB_PRIVATE_KEY
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: github_private_key
         securityContext:
           privileged: false
         lifecycle:

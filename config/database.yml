@@ -3,6 +3,8 @@ default: &default
   encoding: utf8mb4
   collation: utf8mb4_bin
   strict: true
+  pool: 5
+  timeout: 5000
 
 development:
   <<: *default
@@ -15,3 +17,4 @@ test:
 production:
   <<: *default
   database: shipit
+  pool: <%= ENV['DB_POOL'] || 5 %>
