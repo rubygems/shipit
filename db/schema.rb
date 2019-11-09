@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_14_202523) do
+ActiveRecord::Schema.define(version: 2019_11_09_202947) do
 
   create_table "api_clients", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.text "permissions"
@@ -20,6 +20,22 @@ ActiveRecord::Schema.define(version: 2018_10_14_202523) do
     t.string "name", default: ""
     t.integer "stack_id"
     t.index ["creator_id"], name: "index_api_clients_on_creator_id"
+  end
+
+  create_table "check_runs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.bigint "stack_id", null: false
+    t.bigint "commit_id", null: false
+    t.bigint "github_id", null: false
+    t.string "name", null: false
+    t.string "conclusion", limit: 20
+    t.string "title", limit: 1024
+    t.string "details_url"
+    t.string "html_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["commit_id"], name: "index_check_runs_on_commit_id"
+    t.index ["github_id", "commit_id"], name: "index_check_runs_on_github_id_and_commit_id", unique: true
+    t.index ["stack_id"], name: "index_check_runs_on_stack_id"
   end
 
   create_table "commit_deployment_statuses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
@@ -45,8 +61,8 @@ ActiveRecord::Schema.define(version: 2018_10_14_202523) do
 
   create_table "commits", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "stack_id", null: false
-    t.integer "author_id", null: false
-    t.integer "committer_id", null: false
+    t.integer "author_id"
+    t.integer "committer_id"
     t.string "sha", limit: 40, null: false
     t.text "message", null: false
     t.datetime "created_at"
@@ -60,6 +76,7 @@ ActiveRecord::Schema.define(version: 2018_10_14_202523) do
     t.string "pull_request_title", limit: 1024
     t.integer "pull_request_id"
     t.boolean "locked", default: false, null: false
+    t.integer "lock_author_id"
     t.index ["author_id"], name: "index_commits_on_author_id"
     t.index ["committer_id"], name: "index_commits_on_committer_id"
     t.index ["created_at"], name: "index_commits_on_created_at"
@@ -157,6 +174,21 @@ ActiveRecord::Schema.define(version: 2018_10_14_202523) do
     t.index ["stack_id", "merge_status"], name: "index_pull_requests_on_stack_id_and_merge_status"
     t.index ["stack_id", "number"], name: "index_pull_requests_on_stack_id_and_number", unique: true
     t.index ["stack_id"], name: "index_pull_requests_on_stack_id"
+  end
+
+  create_table "release_statuses", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.bigint "stack_id", null: false
+    t.bigint "commit_id", null: false
+    t.bigint "user_id"
+    t.string "state", limit: 10, null: false
+    t.string "description", limit: 1024
+    t.string "target_url", limit: 1024
+    t.bigint "github_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["commit_id", "github_id"], name: "index_release_statuses_on_commit_id_and_github_id"
+    t.index ["stack_id", "commit_id"], name: "index_release_statuses_on_stack_id_and_commit_id"
+    t.index ["user_id"], name: "index_release_statuses_on_user_id"
   end
 
   create_table "stacks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
