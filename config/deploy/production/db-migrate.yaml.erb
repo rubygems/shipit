@@ -1,0 +1,88 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db-migrate-<%= deployment_id %>
+  labels:
+    name: db-migrate-<%= deployment_id %>
+spec:
+  activeDeadlineSeconds: 300
+  automountServiceAccountToken: false
+  restartPolicy: Never
+  containers:
+  - name: db-migrate
+    image: quay.io/rubygems/shipit:<%= current_sha %>
+    args: ["rails", "db:migrate"]
+    env:
+      - name: RAILS_ENV
+        value: "production"
+      - name: ENV
+        value: "production"
+      - name: SECRET_KEY_BASE
+        valueFrom:
+          secretKeyRef:
+            name: production
+            key: secret_key_base
+      - name: RAILS_LOG_TO_STDOUT
+        value: "true"
+      - name: DATABASE_URL
+        valueFrom:
+          secretKeyRef:
+            name: production
+            key: database_url
+      - name: REDIS_URL
+        valueFrom:
+          secretKeyRef:
+            name: production
+            key: redis_url
+      - name: SHIPIT_HOST
+        valueFrom:
+          secretKeyRef:
+            name: production
+            key: shipit_host
+      - name: SHIPIT_HOME_DIR
+        valueFrom:
+          secretKeyRef:
+            name: production
+            key: shipit_home_dir
+      - name: GITHUB_OAUTH_ID
+        valueFrom:
+          secretKeyRef:
+            name: production
+            key: github_oauth_id
+      - name: GITHUB_OAUTH_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: production
+            key: github_oauth_secret
+      - name: GITHUB_API_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: production
+            key: github_api_token
+      - name: GITHUB_APP_ID
+        valueFrom:
+          secretKeyRef:
+            name: production
+            key: github_app_id
+      - name: GITHUB_INSTALLATION_ID
+        valueFrom:
+          secretKeyRef:
+            name: production
+            key: github_installation_id
+      - name: GITHUB_WEBHOOK_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: production
+            key: github_webhook_secret
+      - name: GITHUB_PRIVATE_KEY
+        valueFrom:
+          secretKeyRef:
+            name: production
+            key: github_private_key
+    # resources:
+    #   requests:
+    #     cpu: 500m
+    #   limits:
+    #     cpu: 1000m
+    #     memory: 2Gi
