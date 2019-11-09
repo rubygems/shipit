@@ -1,6 +1,6 @@
 dependencies:
   override:
-    - true
+    - "true"
 
 kubernetes:
   namespace: shipit
