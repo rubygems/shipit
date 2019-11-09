@@ -39,7 +39,7 @@ COPY kubeconfig.yml /home/deploy/.kube/config
 
 WORKDIR /app
 
-RUN RAILS_ENV=production SECRET_KEY_BASE=1234 REDIS_URL=redis://localhost bin/rails assets:precompile
+RUN RAILS_ENV=production bin/rails assets:precompile
 
 EXPOSE 3000
 

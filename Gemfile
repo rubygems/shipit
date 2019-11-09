@@ -16,4 +16,3 @@ end
 
 gem 'sidekiq'
 gem 'shipit-engine', '0.29.0'
-gem 'redis-rails'
