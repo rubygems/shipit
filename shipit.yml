@@ -5,6 +5,9 @@ machine:
 dependencies:
   override:
     - "true"
+ci:
+  require:
+    - build
 
 kubernetes:
   namespace: shipit
