@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_09_202947) do
+ActiveRecord::Schema.define(version: 2020_02_12_033634) do
 
   create_table "api_clients", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.text "permissions"
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 2019_11_09_202947) do
     t.string "api_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "sha", limit: 40
     t.index ["commit_id", "task_id"], name: "index_commit_deployments_on_commit_id_and_task_id", unique: true
     t.index ["task_id"], name: "index_commit_deployments_on_task_id"
   end
@@ -191,9 +192,15 @@ ActiveRecord::Schema.define(version: 2019_11_09_202947) do
     t.index ["user_id"], name: "index_release_statuses_on_user_id"
   end
 
+  create_table "repositories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.string "owner", limit: 39, null: false
+    t.string "name", limit: 100, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["owner", "name"], name: "repository_unicity", unique: true
+  end
+
   create_table "stacks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
-    t.string "repo_name", limit: 100, null: false
-    t.string "repo_owner", limit: 39, null: false
     t.string "environment", limit: 50, default: "production", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -212,7 +219,11 @@ ActiveRecord::Schema.define(version: 2019_11_09_202947) do
     t.datetime "locked_since"
     t.boolean "merge_queue_enabled", default: false, null: false
     t.datetime "last_deployed_at"
-    t.index ["repo_owner", "repo_name", "environment"], name: "stack_unicity", unique: true
+    t.bigint "repository_id", null: false
+    t.datetime "archived_since"
+    t.index ["archived_since"], name: "index_stacks_on_archived_since"
+    t.index ["repository_id", "environment"], name: "stack_unicity", unique: true
+    t.index ["repository_id"], name: "index_stacks_on_repository_id"
   end
 
   create_table "statuses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
@@ -229,8 +240,8 @@ ActiveRecord::Schema.define(version: 2019_11_09_202947) do
 
   create_table "tasks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "stack_id", null: false
-    t.integer "since_commit_id", null: false
-    t.integer "until_commit_id", null: false
+    t.integer "since_commit_id"
+    t.integer "until_commit_id"
     t.string "status", limit: 10, default: "pending", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
