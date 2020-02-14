@@ -15,4 +15,4 @@ group :development, :test do
 end
 
 gem 'sidekiq'
-gem 'shipit-engine', '0.30.0'
+gem 'shipit-engine', '0.31.0'
