@@ -1,5 +1,9 @@
 source 'https://rubygems.org'
 
+git_source :github do |repo|
+  "https://github.com/#{repo}.git"
+end
+
 gem 'rails', '~> 6.0.2'
 gem 'mysql2'
 gem 'puma', '~> 4.3'
@@ -15,4 +19,4 @@ group :development, :test do
 end
 
 gem 'sidekiq'
-gem 'shipit-engine', '0.31.0'
+gem 'shipit-engine', '>= 0.31.0', github: 'Shopify/shipit-engine'
