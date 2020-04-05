@@ -6,15 +6,15 @@ default: &default
   pool: 5
   timeout: 5000
 
-development:
+development: &development
   <<: *default
   database: shipit_development
 
 test:
-  <<: *default
+  <<: *development
   database: shipit_test
 
 production:
   <<: *default
   database: shipit
-  pool: <%= ENV['DB_POOL'] || 5 %>
+  pool: <%= ENV["DB_POOL"] || ENV['RAILS_MAX_THREADS'] || 5 %>
