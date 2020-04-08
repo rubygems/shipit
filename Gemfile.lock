@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Shopify/shipit-engine.git
-  revision: 59ad6b001dd7912b8eedd0a9ccaab43c05e02827
+  revision: 3007ea6b1f0845832f7f5a38c900de3969e43ac8
   specs:
     shipit-engine (0.31.0)
       active_model_serializers (~> 0.9.3)
@@ -152,7 +152,7 @@ GEM
       rb-inotify (~> 0.9, >= 0.9.10)
     lodash-rails (4.6.1)
       railties (>= 3.1)
-    loofah (2.4.0)
+    loofah (2.5.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -282,7 +282,7 @@ GEM
     thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
-    tzinfo (1.2.6)
+    tzinfo (1.2.7)
       thread_safe (~> 0.1)
     validate_url (1.0.8)
       activemodel (>= 3.0.0)
