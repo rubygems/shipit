@@ -4,7 +4,7 @@ metadata:
   name: shipit
   annotations:
     kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-2:048268392960:certificate/29b476ff-9e9b-419e-9b0f-9db5b0dce544
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-2:048268392960:certificate/4631b699-ff31-461e-84b4-4260cac038d1
     alb.ingress.kubernetes.io/scheme: internet-facing
 spec:
   rules:
