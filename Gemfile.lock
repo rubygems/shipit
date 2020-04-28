@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Shopify/shipit-engine.git
-  revision: 618ac78c8fb52e30c71c8b49c45aa48e1152110d
+  revision: ae2ef38c72c6a88d952756b66da4746120ae5d10
   specs:
     shipit-engine (0.31.0)
       active_model_serializers (~> 0.9.3)
