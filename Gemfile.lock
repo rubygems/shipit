@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Shopify/shipit-engine.git
-  revision: 618ac78c8fb52e30c71c8b49c45aa48e1152110d
+  revision: 67713cfe5bf093048b163fd7d2f96982bc3d15e1
   specs:
     shipit-engine (0.31.0)
       active_model_serializers (~> 0.9.3)
@@ -233,7 +233,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.20.3, < 2.0)
     rake (13.0.1)
-    rb-fsevent (0.10.3)
+    rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     redis (4.1.3)
