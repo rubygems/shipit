@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_12_033634) do
+ActiveRecord::Schema.define(version: 2020_07_20_121952) do
 
   create_table "api_clients", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.text "permissions"
@@ -78,6 +78,7 @@ ActiveRecord::Schema.define(version: 2020_02_12_033634) do
     t.integer "pull_request_id"
     t.boolean "locked", default: false, null: false
     t.integer "lock_author_id"
+    t.string "pull_request_head_sha", limit: 40
     t.index ["author_id"], name: "index_commits_on_author_id"
     t.index ["committer_id"], name: "index_commits_on_committer_id"
     t.index ["created_at"], name: "index_commits_on_created_at"
@@ -261,11 +262,13 @@ ActiveRecord::Schema.define(version: 2020_02_12_033634) do
     t.datetime "ended_at"
     t.boolean "ignored_safeties", default: false, null: false
     t.integer "aborted_by_id"
+    t.integer "rollback_once_aborted_to_id"
     t.index ["rolled_up", "created_at", "status"], name: "index_tasks_on_rolled_up_and_created_at_and_status"
     t.index ["since_commit_id"], name: "index_tasks_on_since_commit_id"
     t.index ["stack_id", "allow_concurrency", "status"], name: "index_active_tasks"
     t.index ["stack_id", "allow_concurrency"], name: "index_tasks_on_stack_id_and_allow_concurrency"
     t.index ["stack_id", "status", "type"], name: "index_tasks_by_stack_and_status"
+    t.index ["status"], name: "index_tasks_on_status"
     t.index ["type", "stack_id", "parent_id"], name: "index_tasks_by_stack_and_parent"
     t.index ["until_commit_id"], name: "index_tasks_on_until_commit_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"
