@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/Shopify/shipit-engine.git
-  revision: 8c36dbd96edf0cc39e100efd586f11031209450a
+  revision: b94d49cfe3dc3c60b7ee46dc26abcf41732f9b3a
   specs:
-    shipit-engine (0.31.0)
+    shipit-engine (0.32.0)
       active_model_serializers (~> 0.9.3)
       ansi_stream (~> 0.0.6)
       attr_encrypted (~> 3.1.0)
@@ -117,7 +117,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    concurrent-ruby (1.1.6)
+    concurrent-ruby (1.1.7)
     connection_pool (2.2.3)
     crass (1.0.6)
     descendants_tracker (0.0.4)
@@ -139,7 +139,7 @@ GEM
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     hashie (4.1.0)
-    i18n (1.8.3)
+    i18n (1.8.5)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
     jquery-rails (4.1.1)
@@ -187,8 +187,8 @@ GEM
     omniauth-github (1.4.0)
       omniauth (~> 1.5)
       omniauth-oauth2 (>= 1.4.0, < 2.0)
-    omniauth-oauth2 (1.6.0)
-      oauth2 (~> 1.1)
+    omniauth-oauth2 (1.7.0)
+      oauth2 (~> 1.4)
       omniauth (~> 1.9)
     public_suffix (4.0.5)
     pubsubstub (0.2.0)
@@ -297,7 +297,7 @@ GEM
     websocket-driver (0.7.3)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    zeitwerk (2.3.1)
+    zeitwerk (2.4.0)
 
 PLATFORMS
   ruby
