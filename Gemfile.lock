@@ -194,7 +194,7 @@ GEM
     pubsubstub (0.2.0)
       rack
       redis (~> 4.0)
-    puma (4.3.5)
+    puma (4.3.6)
       nio4r (~> 2.0)
     rack (2.2.3)
     rack-test (1.1.0)
