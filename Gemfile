@@ -11,7 +11,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 
 group :development do
   gem 'web-console', '>= 3.3.0'
-  gem 'listen', '>= 3.0.5', '< 3.3'
+  gem 'listen', '>= 3.0.5', '< 3.4'
 end
 
 group :development, :test do
