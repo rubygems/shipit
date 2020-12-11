@@ -6,7 +6,7 @@ end
 
 gem 'rails', '~> 6.0.3'
 gem 'mysql2'
-gem 'puma', '~> 4.3'
+gem 'puma', '~> 5.1'
 gem 'bootsnap', '>= 1.4.2', require: false
 
 group :development do
