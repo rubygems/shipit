@@ -1,17 +1,13 @@
 source 'https://rubygems.org'
 
-git_source :github do |repo|
-  "https://github.com/#{repo}.git"
-end
-
-gem 'rails', '~> 6.0.3'
+gem 'rails', '~> 7.0.0'
 gem 'mysql2'
 gem 'puma', '~> 4.3'
 gem 'bootsnap', '>= 1.4.2', require: false
 
 group :development do
   gem 'web-console', '>= 3.3.0'
-  gem 'listen', '>= 3.0.5', '< 3.3'
+  gem 'listen', '>= 3.0.5'
 end
 
 group :development, :test do
@@ -19,4 +15,4 @@ group :development, :test do
 end
 
 gem 'sidekiq'
-gem 'shipit-engine', '>= 0.31.0', github: 'Shopify/shipit-engine'
+gem 'shipit-engine', '>= 0.36.0'
