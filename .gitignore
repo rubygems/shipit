@@ -22,3 +22,5 @@
 /data/*
 /coverage/*
 /public/assets/*
+
+config/database.yml

@@ -6,6 +6,7 @@ RUN apk update && apk --update add \
   # libstdc++ \
   tzdata \
   mysql-client \
+  shared-mime-info \
   nodejs
 
 COPY Gemfile /app/
@@ -39,7 +40,10 @@ COPY kubeconfig.yml /home/deploy/.kube/config
 
 WORKDIR /app
 
-RUN RAILS_ENV=production bin/rails assets:precompile
+# We need to use dummy DATABASE_URL to be able to precompile assets
+# since it fails with no config/database.yml by default, but the 
+# DB connection is acutally no needed.
+RUN RAILS_ENV=production DATABASE_URL=mysql2://dummy/dummy bin/rails assets:precompile
 
 EXPOSE 3000
 

@@ -1,0 +1,28 @@
+name: Tests
+
+on:
+  push:
+
+jobs: 
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install and start services
+      run: |
+        docker-compose up -d
+
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '2.5.7'
+        bundler-cache: true
+
+    - name: Wait for MySQL to boot
+      run: |
+        timeout 30 bash -c 'until mysqladmin ping -h 127.0.0.1 -u shipit -pshipit; do echo waiting for MySQL; sleep 1; done'
+
+    - name: Run tests
+      run: |
+        cp config/database.ci.yml config/database.yml
+        bin/rails db:setup test
