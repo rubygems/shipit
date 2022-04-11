@@ -3,9 +3,6 @@ services:
   db: 
     image: mysql:5.7
     environment:
-      MYSQL_USER: shipit
-      MYSQL_PASSWORD: shipit
-      MYSQL_DATABASE: shipit_test
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: shipit
     ports:
       - '3306:3306'

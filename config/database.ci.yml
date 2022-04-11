@@ -3,7 +3,7 @@ default: &default
   encoding: utf8mb4
   collation: utf8mb4_bin
   host: 127.0.0.1
-  username: shipit
+  username: root
   password: shipit
   strict: true
   pool: 5
