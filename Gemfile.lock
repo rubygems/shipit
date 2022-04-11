@@ -95,7 +95,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.10)
-    connection_pool (2.2.3)
+    connection_pool (2.2.5)
     crass (1.0.6)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
@@ -297,7 +297,7 @@ GEM
       sprockets-rails (>= 2.3.2)
       state_machines-activerecord (~> 0.8.0)
       validate_url (~> 1.0.0)
-    sidekiq (6.1.0)
+    sidekiq (6.4.1)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
