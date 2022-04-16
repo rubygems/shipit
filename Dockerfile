@@ -24,7 +24,7 @@ RUN apk --update add \
   bash \
   && gem install bundler && \
   cd /app ; bundle install --without development test && \
-  gem install kubernetes-deploy --no-document --version=0.30.0
+  gem install krane -f --no-document --version=2.4.6
 
 COPY . /app
 
