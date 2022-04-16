@@ -31,7 +31,7 @@ COPY . /app
 COPY root/ root/
 RUN chmod -R 700 root/.ssh
 
-ADD https://storage.googleapis.com/kubernetes-release/release/v1.15.11/bin/linux/amd64/kubectl /usr/bin/kubectl
+ADD https://dl.k8s.io/release/v1.23.5/bin/linux/amd64/kubectl /usr/bin/kubectl
 RUN chmod +x /usr/bin/kubectl
 
 COPY kubeconfig.yml /root/.kube/config
