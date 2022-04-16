@@ -24,14 +24,14 @@ RUN apk --update add \
   bash \
   && gem install bundler && \
   cd /app ; bundle install --without development test && \
-  gem install kubernetes-deploy --no-document --version=0.30.0
+  gem install krane -f --no-document --version=2.4.6
 
 COPY . /app
 
 COPY root/ root/
 RUN chmod -R 700 root/.ssh
 
-ADD https://storage.googleapis.com/kubernetes-release/release/v1.15.11/bin/linux/amd64/kubectl /usr/bin/kubectl
+ADD https://dl.k8s.io/release/v1.23.5/bin/linux/amd64/kubectl /usr/bin/kubectl
 RUN chmod +x /usr/bin/kubectl
 
 COPY kubeconfig.yml /root/.kube/config
