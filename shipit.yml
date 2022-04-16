@@ -11,11 +11,11 @@ ci:
 
 deploy:
   override:
-    - krane render -f config/deploy/$ENVIRONMENT --bindings=environment=$ENVIRONMENT --current-sha=$REVISION | krane deploy shipit rubygems -f -
+    - krane render -f config/deploy/$ENVIRONMENT --bindings=environment=$ENVIRONMENT --current-sha=$REVISION | krane deploy shipit rubygems --stdin -f config/deploy/$ENVIRONMENT/secrets.ejson
 
 rollback:
   override:
-    - krane render -f config/deploy/$ENVIRONMENT --bindings=environment=$ENVIRONMENT --current-sha=$REVISION | krane deploy shipit rubygems -f -
+    - krane render -f config/deploy/$ENVIRONMENT --bindings=environment=$ENVIRONMENT --current-sha=$REVISION | krane deploy shipit rubygems --stdin -f config/deploy/$ENVIRONMENT/secrets.ejson
 
 tasks:
   restart:
