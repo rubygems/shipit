@@ -24,7 +24,6 @@ RUN apk --update add \
   bash \
   && gem install bundler && \
   cd /app ; bundle install --without development test && \
-  gem install activesupport --no-document -v 6.1.5 && \
   gem install krane -f --no-document --version=2.4.6
 
 COPY . /app
