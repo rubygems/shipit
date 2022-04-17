@@ -24,6 +24,7 @@ RUN apk --update add \
   bash \
   && gem install bundler && \
   cd /app ; bundle install --without development test && \
+  gem install activesupport --no-document -v 6.1.5 && \
   gem install krane -f --no-document --version=2.4.6
 
 COPY . /app
@@ -40,7 +41,7 @@ COPY kubeconfig.yml /home/deploy/.kube/config
 WORKDIR /app
 
 # We need to use dummy DATABASE_URL to be able to precompile assets
-# since it fails with no config/database.yml by default, but the 
+# since it fails with no config/database.yml by default, but the
 # DB connection is acutally no needed.
 RUN RAILS_ENV=production DATABASE_URL=mysql2://dummy/dummy bin/rails assets:precompile
 
