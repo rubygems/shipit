@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 7.0.4'
 gem 'mysql2'
-gem 'puma', '~> 5.6'
+gem 'puma', '~> 6.0'
 gem 'bootsnap', '>= 1.4.2', require: false
 
 group :development do
