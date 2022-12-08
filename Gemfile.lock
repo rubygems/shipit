@@ -177,7 +177,7 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.9)
+    nokogiri (1.13.10)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     oauth2 (2.0.6)
@@ -207,7 +207,7 @@ GEM
       redis (~> 4.0)
     puma (6.0.0)
       nio4r (~> 2.0)
-    racc (1.6.0)
+    racc (1.6.1)
     rack (2.2.4)
     rack-test (2.0.2)
       rack (>= 1.3)
