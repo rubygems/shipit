@@ -1,0 +1,230 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: minutely
+  labels:
+    name: minutely
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            name: minutely
+        spec:
+          restartPolicy: "OnFailure"
+          containers:
+          - name: minutely
+            image: quay.io/rubygems/shipit:<%= current_sha %>
+            args: ["bin/rake", "cron:minutely"]
+            resources:
+              requests:
+                cpu: 200m
+                memory: 1Gi
+              limits:
+                cpu: 500m
+                memory: 1.5Gi
+            env:
+              - name: RAILS_ENV
+                value: "production"
+              - name: ENV
+                value: "production"
+              # - name: STATSD_IMPLEMENTATION
+              #   value: "datadog"
+              # - name: STATSD_HOST
+              #   valueFrom:
+              #     fieldRef:
+              #       apiVersion: v1
+              #       fieldPath: status.hostIP
+              # - name: STATSD_ADDR
+              #   value: $(STATSD_HOST):8125
+              - name: SECRET_KEY_BASE
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: secret_key_base
+              - name: DATABASE_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: database_url
+              - name: REDIS_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: redis_url
+              - name: SHIPIT_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: shipit_host
+              - name: SHIPIT_HOME_DIR
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: shipit_home_dir
+              - name: GITHUB_OAUTH_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_oauth_id
+              - name: GITHUB_OAUTH_SECRET
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_oauth_secret
+              - name: GITHUB_API_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_api_token
+              - name: GITHUB_APP_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_app_id
+              - name: GITHUB_INSTALLATION_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_installation_id
+              - name: GITHUB_WEBHOOK_SECRET
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_webhook_secret
+              - name: GITHUB_PRIVATE_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_private_key
+            securityContext:
+              privileged: false
+            volumeMounts:
+            - name: deployer-secrets
+              mountPath: /root/.ssh/id_rsa
+              subPath: ssh-key
+              readOnly: true
+          volumes:
+          - name: deployer-secrets
+            secret:
+              secretName: production
+              defaultMode: 256
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hourly
+  labels:
+    name: hourly
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "0 * * * *
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            name: hourly
+        spec:
+          restartPolicy: "OnFailure"
+          containers:
+          - name: hourly
+            image: quay.io/rubygems/shipit:<%= current_sha %>
+            args: ["bin/rake", "cron:hourly"]
+            resources:
+              requests:
+                cpu: 200m
+                memory: 1Gi
+              limits:
+                cpu: 500m
+                memory: 1.5Gi
+            env:
+              - name: RAILS_ENV
+                value: "production"
+              - name: ENV
+                value: "production"
+              # - name: STATSD_IMPLEMENTATION
+              #   value: "datadog"
+              # - name: STATSD_HOST
+              #   valueFrom:
+              #     fieldRef:
+              #       apiVersion: v1
+              #       fieldPath: status.hostIP
+              # - name: STATSD_ADDR
+              #   value: $(STATSD_HOST):8125
+              - name: SECRET_KEY_BASE
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: secret_key_base
+              - name: DATABASE_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: database_url
+              - name: REDIS_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: redis_url
+              - name: SHIPIT_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: shipit_host
+              - name: SHIPIT_HOME_DIR
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: shipit_home_dir
+              - name: GITHUB_OAUTH_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_oauth_id
+              - name: GITHUB_OAUTH_SECRET
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_oauth_secret
+              - name: GITHUB_API_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_api_token
+              - name: GITHUB_APP_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_app_id
+              - name: GITHUB_INSTALLATION_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_installation_id
+              - name: GITHUB_WEBHOOK_SECRET
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_webhook_secret
+              - name: GITHUB_PRIVATE_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_private_key
+            securityContext:
+              privileged: false
+            volumeMounts:
+            - name: deployer-secrets
+              mountPath: /root/.ssh/id_rsa
+              subPath: ssh-key
+              readOnly: true
+          volumes:
+          - name: deployer-secrets
+            secret:
+              secretName: production
+              defaultMode: 256
