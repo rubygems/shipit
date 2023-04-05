@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: shipit
@@ -14,5 +14,7 @@ spec:
         paths:
           - path: /*
             backend:
-              serviceName: puma
-              servicePort: 80
+              service:
+                name: puma
+                port:
+                  number: 80
