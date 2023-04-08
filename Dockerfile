@@ -1,5 +1,6 @@
 FROM ruby:3.1.4-alpine3.17
 ARG KRANE_VERSION=3.0.1
+ARG KUBECTL_VERSION=1.26.3
 
 RUN apk update && apk --update add \
   ruby-io-console \
@@ -32,7 +33,7 @@ COPY . /app
 COPY root/ root/
 RUN chmod -R 700 root/.ssh
 
-ADD https://dl.k8s.io/release/v1.23.5/bin/linux/amd64/kubectl /usr/bin/kubectl
+ADD https://dl.k8s.io/release/v$KUBECTL_VERSION/bin/linux/amd64/kubectl /usr/bin/kubectl
 RUN chmod +x /usr/bin/kubectl
 
 COPY kubeconfig.yml /root/.kube/config
