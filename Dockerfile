@@ -1,4 +1,5 @@
 FROM ruby:3.1.4-alpine3.17
+ARG KRANE_VERSION=3.0.1
 
 RUN apk update && apk --update add \
   ruby-io-console \
@@ -24,7 +25,7 @@ RUN apk --update add \
   bash \
   && gem install bundler && \
   cd /app ; bundle install --without development test && \
-  gem install krane -f --no-document --version=2.4.6
+  gem install krane -f --no-document --version=$KRANE_VERSION
 
 COPY . /app
 
