@@ -1,4 +1,4 @@
-FROM ruby:3.0.3-alpine3.15
+FROM ruby:3.1.4-alpine3.17
 
 RUN apk update && apk --update add \
   ruby-io-console \
