@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_09_130959) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_14_190527) do
   create_table "api_clients", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.text "permissions"
     t.integer "creator_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "name", default: ""
     t.integer "stack_id"
     t.index ["creator_id"], name: "index_api_clients_on_creator_id"
@@ -30,8 +30,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_09_130959) do
     t.string "title", limit: 1024
     t.string "details_url"
     t.string "html_url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.datetime "github_updated_at", precision: nil
     t.index ["commit_id"], name: "index_check_runs_on_commit_id"
     t.index ["github_id", "commit_id"], name: "index_check_runs_on_github_id_and_commit_id", unique: true
@@ -41,10 +41,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_09_130959) do
   create_table "commit_deployment_statuses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "commit_deployment_id"
     t.string "status"
-    t.integer "github_id"
+    t.bigint "github_id"
     t.string "api_url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["commit_deployment_id"], name: "index_commit_deployment_statuses_on_commit_deployment_id"
   end
 
@@ -53,8 +53,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_09_130959) do
     t.integer "task_id"
     t.integer "github_id"
     t.string "api_url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "sha", limit: 40
     t.index ["commit_id", "task_id"], name: "index_commit_deployments_on_commit_id_and_task_id", unique: true
     t.index ["task_id"], name: "index_commit_deployments_on_task_id"
@@ -66,11 +66,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_09_130959) do
     t.integer "committer_id"
     t.string "sha", limit: 40, null: false
     t.text "message", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.boolean "detached", default: false, null: false
-    t.datetime "authored_at", null: false
-    t.datetime "committed_at", null: false
+    t.datetime "authored_at", precision: nil, null: false
+    t.datetime "committed_at", precision: nil, null: false
     t.integer "additions"
     t.integer "deletions"
     t.integer "pull_request_number"
@@ -96,9 +96,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_09_130959) do
     t.integer "response_code"
     t.text "response_headers"
     t.text "response_body"
-    t.datetime "delivered_at"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "delivered_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["hook_id", "event", "status"], name: "index_deliveries_on_hook_id_and_event_and_status"
     t.index ["hook_id", "status"], name: "index_deliveries_on_hook_id_and_status"
   end
@@ -107,8 +107,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_09_130959) do
     t.integer "stack_id"
     t.integer "github_id"
     t.string "event", limit: 50, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "secret"
     t.string "api_url"
     t.string "type"
@@ -124,16 +124,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_09_130959) do
     t.string "secret"
     t.string "events", default: "", null: false
     t.boolean "insecure_ssl", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["stack_id"], name: "index_hooks_on_stack_id"
   end
 
   create_table "memberships", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "team_id"
     t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["team_id", "user_id"], name: "index_memberships_on_team_id_and_user_id", unique: true
     t.index ["user_id"], name: "index_memberships_on_user_id"
   end
@@ -151,13 +151,13 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_09_130959) do
     t.integer "deletions", default: 0, null: false
     t.string "merge_status", limit: 30, null: false
     t.string "rejection_reason"
-    t.datetime "merge_requested_at", null: false
+    t.datetime "merge_requested_at", precision: nil, null: false
     t.integer "merge_requested_by_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "branch"
-    t.datetime "revalidated_at"
-    t.datetime "merged_at"
+    t.datetime "revalidated_at", precision: nil
+    t.datetime "merged_at", precision: nil
     t.string "base_ref", limit: 1024
     t.integer "base_commit_id"
     t.index ["base_commit_id"], name: "fk_rails_eda2bf836a"
@@ -173,30 +173,30 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_09_130959) do
   create_table "output_chunks", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "task_id"
     t.text "text", size: :medium
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.index ["task_id"], name: "index_output_chunks_on_task_id"
   end
 
   create_table "pull_request_assignments", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.integer "pull_request_id"
-    t.integer "user_id"
+    t.bigint "pull_request_id"
+    t.bigint "user_id"
     t.index ["pull_request_id"], name: "index_pull_request_assignments_on_pull_request_id"
     t.index ["user_id"], name: "index_pull_request_assignments_on_user_id"
   end
 
   create_table "pull_requests", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.integer "stack_id", null: false
+    t.bigint "stack_id", null: false
     t.integer "number", null: false
-    t.string "title", limit: 256
+    t.string "title", limit: 191
     t.bigint "github_id"
-    t.string "api_url", limit: 1024
-    t.string "state"
+    t.string "api_url", limit: 191
+    t.string "state", limit: 191
     t.integer "additions", default: 0, null: false
     t.integer "deletions", default: 0, null: false
     t.integer "user_id"
     t.text "labels"
-    t.integer "head_id"
+    t.bigint "head_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["head_id"], name: "index_pull_requests_on_head_id"
@@ -213,8 +213,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_09_130959) do
     t.string "description", limit: 1024
     t.string "target_url", limit: 1024
     t.bigint "github_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["commit_id", "github_id"], name: "index_release_statuses_on_commit_id_and_github_id"
     t.index ["stack_id", "commit_id"], name: "index_release_statuses_on_stack_id_and_commit_id"
     t.index ["user_id"], name: "index_release_statuses_on_user_id"
@@ -226,15 +226,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_09_130959) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "review_stacks_enabled", default: false
-    t.string "provisioning_behavior", default: "allow_all"
-    t.string "provisioning_label_name"
+    t.string "provisioning_behavior", limit: 191, default: "allow_all"
+    t.string "provisioning_label_name", limit: 191
     t.index ["owner", "name"], name: "repository_unicity", unique: true
   end
 
   create_table "stacks", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "environment", limit: 50, default: "production", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "branch", null: false
     t.string "deploy_url"
     t.string "lock_reason", limit: 4096
@@ -244,16 +244,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_09_130959) do
     t.text "cached_deploy_spec"
     t.integer "lock_author_id"
     t.boolean "ignore_ci"
-    t.datetime "inaccessible_since"
+    t.datetime "inaccessible_since", precision: nil
     t.integer "estimated_deploy_duration", default: 1, null: false
-    t.datetime "continuous_delivery_delayed_since"
-    t.datetime "locked_since"
+    t.datetime "continuous_delivery_delayed_since", precision: nil
+    t.datetime "locked_since", precision: nil
     t.boolean "merge_queue_enabled", default: false, null: false
-    t.datetime "last_deployed_at"
+    t.datetime "last_deployed_at", precision: nil
     t.bigint "repository_id", null: false
-    t.datetime "archived_since"
-    t.string "provision_status", default: "deprovisioned", null: false
-    t.string "type", default: "Shipit::Stack"
+    t.datetime "archived_since", precision: nil
+    t.string "provision_status", limit: 191, default: "deprovisioned", null: false
+    t.string "type", limit: 191, default: "Shipit::Stack"
     t.boolean "awaiting_provision", default: false, null: false
     t.index ["archived_since"], name: "index_stacks_on_archived_since"
     t.index ["awaiting_provision"], name: "index_stacks_on_awaiting_provision"
@@ -269,8 +269,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_09_130959) do
     t.text "description"
     t.string "context", default: "default", null: false
     t.integer "commit_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "stack_id", null: false
     t.index ["commit_id"], name: "index_statuses_on_commit_id"
   end
@@ -280,8 +280,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_09_130959) do
     t.integer "since_commit_id"
     t.integer "until_commit_id"
     t.string "status", limit: 10, default: "pending", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "user_id"
     t.boolean "rolled_up", default: false, null: false
     t.string "type", limit: 20
@@ -294,8 +294,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_09_130959) do
     t.text "env"
     t.integer "confirmations", default: 0, null: false
     t.boolean "allow_concurrency", default: false, null: false
-    t.datetime "started_at"
-    t.datetime "ended_at"
+    t.datetime "started_at", precision: nil
+    t.datetime "ended_at", precision: nil
     t.boolean "ignored_safeties", default: false, null: false
     t.integer "aborted_by_id"
     t.integer "rollback_once_aborted_to_id"
@@ -315,11 +315,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_09_130959) do
   create_table "teams", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "github_id"
     t.string "api_url"
-    t.string "slug"
+    t.string "slug", limit: 191
     t.string "name"
     t.string "organization", limit: 39
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["organization", "slug"], name: "index_teams_on_organization_and_slug", unique: true
   end
 
@@ -329,8 +329,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_09_130959) do
     t.string "email"
     t.string "login", limit: 39
     t.string "api_url"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "avatar_url"
     t.string "encrypted_github_access_token"
     t.string "encrypted_github_access_token_iv"
