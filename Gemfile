@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 7.0.7'
+gem 'rails', '~> 7.0.8'
 gem 'mysql2'
 gem 'puma', '~> 6.3'
 gem 'bootsnap', '>= 1.4.2', require: false
