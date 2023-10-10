@@ -300,7 +300,7 @@ GEM
       sprockets-rails (>= 2.3.2)
       state_machines-activerecord (~> 0.8.0)
       validate_url (~> 1.0.0)
-    sidekiq (7.1.5)
+    sidekiq (7.1.6)
       concurrent-ruby (< 2)
       connection_pool (>= 2.3.0)
       rack (>= 2.2.4)
