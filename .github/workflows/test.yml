@@ -7,22 +7,22 @@ jobs:
   test:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Install and start services
-      run: |
-        docker-compose up -d
+      - name: Install and start services
+        run: |
+          docker compose up -d --wait
 
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.0.3'
-        bundler-cache: true
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.0.3"
+          bundler-cache: true
 
-    - name: Wait for MySQL to boot
-      run: |
-        timeout 30 bash -c 'until mysqladmin ping -h 127.0.0.1 -u root -pshipit; do echo waiting for MySQL; sleep 1; done'
+      - name: Wait for MySQL to boot
+        run: |
+          timeout 30 bash -c 'until mysqladmin ping -h 127.0.0.1 -u root -pshipit; do echo waiting for MySQL; sleep 1; done'
 
-    - name: Run tests
-      run: |
-        cp config/database.ci.yml config/database.yml
-        bin/rails db:setup test
+      - name: Run tests
+        run: |
+          cp config/database.ci.yml config/database.yml
+          bin/rails db:setup test

@@ -6,11 +6,11 @@ This is the [shipit-engine](https://github.com/Shopify/shipit-engine) instance f
 
 Shipit needs MySQL database to be running. You can copy `config/database.yml.sample` to `config/database.yml` and tweak.
 
-You can also use pre-configured setup (originally prepared for CI) using `docker-compose`.
+You can also use pre-configured setup (originally prepared for CI) using `docker compose`.
 
 ```bash
 cp config/database.ci.yml config/database.ylm
-docker-compose up -d
+docker compose up -d
 ```
 
 ## Running tests
