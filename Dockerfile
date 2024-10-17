@@ -1,4 +1,4 @@
-FROM ruby:3.3.0-alpine3.18
+FROM ruby:3.3.5-alpine3.20
 ARG KRANE_VERSION=3.0.1
 ARG KUBECTL_VERSION=1.26.3
 
@@ -12,6 +12,7 @@ RUN apk update && apk --update add \
 
 COPY Gemfile /app/
 COPY Gemfile.lock /app/
+COPY .ruby-version /app/
 
 RUN apk --update add \
   --virtual build-dependencies \
