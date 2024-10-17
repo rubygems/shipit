@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby file: ".ruby-version"
+
 gem 'rails', '~> 7.0.8'
 gem 'mysql2'
 gem 'puma', '~> 6.4'
