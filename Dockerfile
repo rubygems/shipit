@@ -12,6 +12,7 @@ RUN apk update && apk --update add \
 
 COPY Gemfile /app/
 COPY Gemfile.lock /app/
+COPY .ruby-version /app/
 
 RUN apk --update add \
   --virtual build-dependencies \
