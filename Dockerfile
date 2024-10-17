@@ -1,4 +1,4 @@
-FROM ruby:3.3.5-alpine3.18
+FROM ruby:3.3.5-alpine3.20
 ARG KRANE_VERSION=3.0.1
 ARG KUBECTL_VERSION=1.26.3
 
