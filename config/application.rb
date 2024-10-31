@@ -30,5 +30,12 @@ module Shipit
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+    # Keep using secrets.yml instead of Rails.application.credentials
+    # since there is no need to encrypt secrets.yml, but Shipit requires
+    # sensitive info being loaded from Rails.application.credentials.
+    def credentials
+      config_for(:secrets, env: Rails.env)
+    end
   end
 end
