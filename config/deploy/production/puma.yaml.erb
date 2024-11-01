@@ -124,6 +124,21 @@ spec:
               secretKeyRef:
                 name: production
                 key: github_private_key
+          - name: ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: active_record_encryption_primary_key
+          - name: ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: active_record_encryption_deterministic_key
+          - name: ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: active_record_encryption_key_derivation_salt
         securityContext:
           privileged: false
         lifecycle:
