@@ -343,7 +343,7 @@ GEM
       sprockets-rails (>= 2.3.2)
       state_machines-activerecord (~> 0.8.0)
       validate_url (~> 1.0.0)
-    sidekiq (7.3.4)
+    sidekiq (7.3.5)
       connection_pool (>= 2.3.0)
       logger
       rack (>= 2.2.4)
