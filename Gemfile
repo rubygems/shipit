@@ -9,7 +9,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'base64', '~> 0.2.0'
 gem 'bigdecimal', '~> 3.1'
 gem 'mutex_m', '~> 0.2.0'
-gem 'json', '~> 2.7'
+gem 'json', '~> 2.8'
 
 group :development do
   gem 'web-console', '>= 3.3.0'
