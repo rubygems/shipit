@@ -4,7 +4,7 @@ ruby file: ".ruby-version"
 
 gem 'rails', '~> 7.1.3'
 gem 'mysql2'
-gem 'puma', '~> 6.4'
+gem 'puma', '~> 6.5'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'base64', '~> 0.2.0'
 gem 'bigdecimal', '~> 3.1'
