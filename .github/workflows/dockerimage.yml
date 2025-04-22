@@ -1,6 +1,14 @@
 name: Docker Image
 
-on: [push]
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - Tests
+    types:
+      - completed
+    branches:
+      - main
 
 jobs:
 
