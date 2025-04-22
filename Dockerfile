@@ -1,6 +1,6 @@
-FROM ruby:3.3.5-alpine3.20
-ARG KRANE_VERSION=3.0.1
-ARG KUBECTL_VERSION=1.26.3
+FROM ruby:3.4.3-alpine3.20
+ARG KRANE_VERSION=3.4.1
+ARG KUBECTL_VERSION=1.32.3
 
 RUN apk update && apk --update add \
   ruby-io-console \
@@ -8,7 +8,8 @@ RUN apk update && apk --update add \
   tzdata \
   mysql-client \
   shared-mime-info \
-  nodejs
+  nodejs \
+  yaml-dev
 
 COPY Gemfile /app/
 COPY Gemfile.lock /app/
