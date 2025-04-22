@@ -1,10 +1,10 @@
 default: &default
   adapter: mysql2
   encoding: utf8mb4
-  collation: utf8mb4_bin
-  strict: true
-  pool: 5
-  timeout: 5000
+  pool: <%= ENV["DB_POOL"] || ENV['RAILS_MAX_THREADS'] || 5 %>
+  username: root
+  password: shipit
+  host: <%= ENV["DB_HOST"] %>
 
 development: &development
   <<: *default
@@ -17,4 +17,3 @@ test:
 production:
   <<: *default
   database: shipit
-  pool: <%= ENV["DB_POOL"] || ENV['RAILS_MAX_THREADS'] || 5 %>

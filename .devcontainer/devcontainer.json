@@ -1,0 +1,43 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+{
+    "name": "RubyGems Shipit",
+    "dockerComposeFile": [
+        "compose.yml",
+        "../compose.yml"
+    ],
+    "service": "rails-app",
+    "runServices": [
+        "db"
+    ],
+    "forwardPorts": [
+        3000, // Rails
+        3306 // MySQL
+    ],
+    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+    // Use 'postCreateCommand' to run commands after the container is created.
+    "onCreateCommand": "bin/setup --skip-server",
+    // Features to add to the dev container. More info: https://containers.dev/features.
+    "features": {
+        "ghcr.io/devcontainers/features/node:": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {},
+        // "ghcr.io/rails/devcontainer/features/activestorage": {},
+        "ghcr.io/rails/devcontainer/features/mysql-client": {}
+    },
+    // Configure tool-specific properties.
+    "containerEnv": {
+        "EDITOR": "code --wait",
+        "DB_HOST": "db"
+    },
+    "customizations": {
+        "codespaces": {
+            "openFiles": [
+                "README.md"
+            ]
+        },
+        "vscode": {
+            "extensions": [
+                "Shopify.ruby-lsp"
+            ]
+        }
+    }
+}
