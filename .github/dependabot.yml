@@ -5,3 +5,6 @@ updates:
   schedule:
     interval: daily
   open-pull-requests-limit: 99
+  ignore:
+    # TODO: Remove me when https://github.com/Shopify/shipit-engine/pull/1314 is resolved
+    - dependency-name: "omniauth-github"
