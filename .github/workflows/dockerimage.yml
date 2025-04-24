@@ -10,10 +10,10 @@ on:
     branches:
       - master
 
+concurrency: production_deploy
+
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
