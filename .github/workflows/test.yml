@@ -12,8 +12,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      DB_HOST: db
     steps:
       - uses: actions/checkout@v2
 
