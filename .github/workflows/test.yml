@@ -12,6 +12,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment:
+      DB_HOST: db
     steps:
       - uses: actions/checkout@v2
 
@@ -24,7 +26,7 @@ jobs:
           bundler-cache: true
 
       - name: Setup Application
-        run: bin/setup
+        run: bin/setup --skip-server
 
       - name: Run Tests
         run: bin/rails test
