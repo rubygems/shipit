@@ -6,13 +6,6 @@ This is the [shipit-engine](https://github.com/Shopify/shipit-engine) instance f
 
 Shipit needs MySQL database to be running. You can copy `config/database.yml.sample` to `config/database.yml` and tweak.
 
-You can also use pre-configured setup (originally prepared for CI) using `docker compose`.
-
-```bash
-cp config/database.ci.yml config/database.ylm
-docker compose up -d
-```
-
 ## Running tests
 
 Once ready MySQL setup is ready, you can run tests using standard rails commands.
@@ -20,7 +13,7 @@ Once ready MySQL setup is ready, you can run tests using standard rails commands
 1. initialize DB (needed only once)
 
 ```bash
-bin/rails db:setup
+bin/rails db:prepare
 ```
 
 2. run tests
