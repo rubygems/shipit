@@ -10,7 +10,9 @@ on:
     branches:
       - master
 
-concurrency: production_deploy
+concurrency:
+  group: production_deploy
+  cancel-in-progress: true
 
 jobs:
   build:
