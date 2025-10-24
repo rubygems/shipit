@@ -238,7 +238,7 @@ GEM
     pubsubstub (0.2.2)
       rack
       redis (~> 4.0)
-    puma (7.0.3)
+    puma (7.1.0)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (2.2.20)
@@ -414,7 +414,7 @@ DEPENDENCIES
   listen (>= 3.0.5)
   mutex_m (~> 0.3.0)
   mysql2
-  puma (~> 7.0)
+  puma (~> 7.1)
   rails (~> 7.1.5)
   shipit-engine (>= 0.36.0)
   sidekiq
