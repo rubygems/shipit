@@ -76,11 +76,6 @@ spec:
                   secretKeyRef:
                     name: production
                     key: github_oauth_secret
-              - name: GITHUB_API_TOKEN
-                valueFrom:
-                  secretKeyRef:
-                    name: production
-                    key: github_api_token
               - name: GITHUB_APP_ID
                 valueFrom:
                   secretKeyRef:
@@ -196,11 +191,6 @@ spec:
                   secretKeyRef:
                     name: production
                     key: github_oauth_secret
-              - name: GITHUB_API_TOKEN
-                valueFrom:
-                  secretKeyRef:
-                    name: production
-                    key: github_api_token
               - name: GITHUB_APP_ID
                 valueFrom:
                   secretKeyRef:
