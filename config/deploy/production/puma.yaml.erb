@@ -124,6 +124,11 @@ spec:
               secretKeyRef:
                 name: production
                 key: github_private_key
+          - name: PREVIOUS_ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY
+            valueFrom:
+              secretKeyRef:
+                name: production
+                key: previous_active_record_encryption_primary_key
           - name: ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY
             valueFrom:
               secretKeyRef:
