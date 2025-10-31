@@ -24,7 +24,6 @@ RUN apk --update add \
   libc-dev \
   linux-headers \
   git \
-  openssh-client \
   bash \
   && gem install bundler && \
   cd /app ; bundle install --without development test && \
