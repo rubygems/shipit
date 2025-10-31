@@ -32,9 +32,6 @@ RUN apk --update add \
 
 COPY . /app
 
-COPY root/ root/
-RUN chmod -R 700 root/.ssh
-
 ADD https://dl.k8s.io/release/v$KUBECTL_VERSION/bin/linux/amd64/kubectl /usr/bin/kubectl
 RUN chmod +x /usr/bin/kubectl
 

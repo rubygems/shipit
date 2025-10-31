@@ -118,16 +118,6 @@ spec:
                     key: active_record_encryption_key_derivation_salt
             securityContext:
               privileged: false
-            volumeMounts:
-            - name: deployer-secrets
-              mountPath: /root/.ssh/id_rsa
-              subPath: ssh-key
-              readOnly: true
-          volumes:
-          - name: deployer-secrets
-            secret:
-              secretName: production
-              defaultMode: 256
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -248,13 +238,3 @@ spec:
                     key: active_record_encryption_key_derivation_salt
             securityContext:
               privileged: false
-            volumeMounts:
-            - name: deployer-secrets
-              mountPath: /root/.ssh/id_rsa
-              subPath: ssh-key
-              readOnly: true
-          volumes:
-          - name: deployer-secrets
-            secret:
-              secretName: production
-              defaultMode: 256
