@@ -2,6 +2,8 @@ FROM ruby:3.4.3-alpine3.20
 ARG KRANE_VERSION=3.4.1
 ARG KUBECTL_VERSION=1.32.3
 
+ENV BUNDLE_WITHOUT="development:test"
+
 RUN apk update && apk --update add \
   ruby-io-console \
   # libstdc++ \
@@ -26,7 +28,7 @@ RUN apk --update add \
   git \
   bash \
   && gem install bundler && \
-  cd /app ; bundle install --without development test && \
+  cd /app ; bundle install && \
   gem install krane -f --no-document --version=$KRANE_VERSION
 
 COPY . /app
