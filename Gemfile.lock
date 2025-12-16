@@ -92,7 +92,7 @@ GEM
       thread_safe (~> 0.3, >= 0.3.1)
     base64 (0.3.0)
     benchmark (0.4.1)
-    bigdecimal (3.3.1)
+    bigdecimal (4.0.0)
     bindex (0.8.1)
     bootsnap (1.19.0)
       msgpack (~> 1.2)
@@ -408,7 +408,7 @@ PLATFORMS
 
 DEPENDENCIES
   base64 (~> 0.3.0)
-  bigdecimal (~> 3.3)
+  bigdecimal (~> 4.0)
   bootsnap (>= 1.4.2)
   byebug
   json (~> 2.18)

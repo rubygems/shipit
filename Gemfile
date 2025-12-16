@@ -7,7 +7,7 @@ gem 'mysql2'
 gem 'puma', '~> 7.1'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'base64', '~> 0.3.0'
-gem 'bigdecimal', '~> 3.3'
+gem 'bigdecimal', '~> 4.0'
 gem 'mutex_m', '~> 0.3.0'
 gem 'json', '~> 2.18'
 
