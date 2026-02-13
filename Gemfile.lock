@@ -94,7 +94,7 @@ GEM
     benchmark (0.4.1)
     bigdecimal (4.0.1)
     bindex (0.8.1)
-    bootsnap (1.22.0)
+    bootsnap (1.23.0)
       msgpack (~> 1.2)
     builder (3.3.0)
     byebug (13.0.0)
