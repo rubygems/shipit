@@ -122,17 +122,16 @@ GEM
       actionpack (>= 6.0)
       activemodel (>= 6.0)
       virtus (~> 1.0)
-    faraday (1.10.5)
+    faraday (1.8.0)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
-      faraday-httpclient (~> 1.0)
-      faraday-multipart (~> 1.0)
+      faraday-httpclient (~> 1.0.1)
       faraday-net_http (~> 1.0)
-      faraday-net_http_persistent (~> 1.0)
+      faraday-net_http_persistent (~> 1.1)
       faraday-patron (~> 1.0)
       faraday-rack (~> 1.0)
-      faraday-retry (~> 1.0)
+      multipart-post (>= 1.2, < 3)
       ruby2_keywords (>= 0.0.4)
     faraday-em_http (1.0.0)
     faraday-em_synchrony (1.0.1)
@@ -140,13 +139,10 @@ GEM
     faraday-http-cache (2.5.0)
       faraday (>= 0.8)
     faraday-httpclient (1.0.1)
-    faraday-multipart (1.2.0)
-      multipart-post (~> 2.0)
     faraday-net_http (1.0.2)
     faraday-net_http_persistent (1.2.0)
     faraday-patron (1.0.0)
     faraday-rack (1.0.0)
-    faraday-retry (1.0.3)
     ffi (1.17.3)
     ffi (1.17.3-aarch64-linux-gnu)
     ffi (1.17.3-arm64-darwin)
@@ -188,7 +184,8 @@ GEM
     marcel (1.0.4)
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
-    minitest (5.25.5)
+    minitest (6.0.1)
+      prism (~> 1.5)
     msgpack (1.8.0)
     multi_xml (0.6.0)
     multipart-post (2.4.1)
@@ -239,6 +236,7 @@ GEM
       omniauth (>= 1.9, < 3)
     paquito (0.10.0)
       msgpack (>= 1.5.2)
+    prism (1.9.0)
     psych (5.2.1)
       date
       stringio
@@ -418,6 +416,7 @@ DEPENDENCIES
   bigdecimal (~> 4.0)
   bootsnap (>= 1.4.2)
   byebug
+  io-console (~> 0.8)
   json (~> 2.18)
   listen (>= 3.0.5)
   mutex_m (~> 0.3.0)
@@ -429,7 +428,7 @@ DEPENDENCIES
   web-console (>= 3.3.0)
 
 RUBY VERSION
-   ruby 3.4.3p32
+  ruby 4.0.1
 
 BUNDLED WITH
-   2.6.8
+  4.0.3
