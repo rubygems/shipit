@@ -19,7 +19,6 @@ COPY .ruby-version /app/
 RUN apk --update add \
   --virtual build-dependencies \
   build-base \
-  ruby-dev \
   # openssl-dev \
   mysql-dev \
   libc-dev \
