@@ -184,8 +184,7 @@ GEM
     marcel (1.0.4)
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
-    minitest (6.0.1)
-      prism (~> 1.5)
+    minitest (5.27.0)
     msgpack (1.8.0)
     multi_xml (0.6.0)
     multipart-post (2.4.1)
@@ -237,7 +236,6 @@ GEM
     ostruct (0.6.3)
     paquito (0.10.0)
       msgpack (>= 1.5.2)
-    prism (1.9.0)
     psych (5.2.1)
       date
       stringio
@@ -420,6 +418,7 @@ DEPENDENCIES
   io-console (~> 0.8)
   json (~> 2.18)
   listen (>= 3.0.5)
+  minitest (~> 5.0)
   mutex_m (~> 0.3.0)
   mysql2
   ostruct
