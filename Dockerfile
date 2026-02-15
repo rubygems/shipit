@@ -24,8 +24,7 @@ RUN apk --update add \
   libc-dev \
   linux-headers \
   git \
-  bash \
-  && gem install bundler && \
+  bash && \
   cd /app ; bundle install && \
   gem install krane -f --no-document --version=$KRANE_VERSION
 
