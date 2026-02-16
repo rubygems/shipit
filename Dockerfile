@@ -1,11 +1,10 @@
-FROM ruby:3.4.3-alpine3.20
+FROM ruby:4.0.1-alpine3.23
 ARG KRANE_VERSION=3.4.1
-ARG KUBECTL_VERSION=1.32.3
+ARG KUBECTL_VERSION=1.34.4
 
 ENV BUNDLE_WITHOUT="development:test"
 
 RUN apk update && apk --update add \
-  ruby-io-console \
   # libstdc++ \
   tzdata \
   mysql-client \
@@ -20,14 +19,12 @@ COPY .ruby-version /app/
 RUN apk --update add \
   --virtual build-dependencies \
   build-base \
-  ruby-dev \
   # openssl-dev \
   mysql-dev \
   libc-dev \
   linux-headers \
   git \
-  bash \
-  && gem install bundler && \
+  bash && \
   cd /app ; bundle install && \
   gem install krane -f --no-document --version=$KRANE_VERSION
 
