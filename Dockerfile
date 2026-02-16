@@ -13,6 +13,11 @@ RUN apk update && apk --update add \
   nodejs \
   yaml-dev
 
+# Add AWS RDS CA bundle to the system trust store so that MariaDB Connector/C
+# (which verifies server certificates by default since v3.4.0) can verify RDS connections.
+ADD https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem /usr/local/share/ca-certificates/aws-rds-global-bundle.crt
+RUN update-ca-certificates
+
 COPY Gemfile /app/
 COPY Gemfile.lock /app/
 COPY .ruby-version /app/
