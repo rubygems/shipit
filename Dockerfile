@@ -6,6 +6,7 @@ ENV BUNDLE_WITHOUT="development:test"
 
 RUN apk update && apk --update add \
   # libstdc++ \
+  ca-certificates \
   tzdata \
   mysql-client \
   shared-mime-info \
