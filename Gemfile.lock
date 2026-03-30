@@ -187,7 +187,9 @@ GEM
     marcel (1.1.0)
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
-    minitest (5.27.0)
+    minitest (6.0.2)
+      drb (~> 2.0)
+      prism (~> 1.5)
     msgpack (1.8.0)
     multi_xml (0.8.1)
       bigdecimal (>= 3.1, < 5)
@@ -423,7 +425,7 @@ DEPENDENCIES
   io-console (~> 0.8)
   json (~> 2.19)
   listen (>= 3.0.5)
-  minitest (~> 5.0)
+  minitest (~> 6.0)
   mutex_m (~> 0.3.0)
   mysql2
   ostruct
