@@ -88,7 +88,7 @@ GEM
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
     base64 (0.3.0)
-    bigdecimal (4.0.1)
+    bigdecimal (4.1.0)
     bindex (0.8.1)
     bootsnap (1.23.0)
       msgpack (~> 1.2)
@@ -419,7 +419,7 @@ PLATFORMS
 
 DEPENDENCIES
   base64 (~> 0.3.0)
-  bigdecimal (~> 4.0)
+  bigdecimal (~> 4.1)
   bootsnap (>= 1.4.2)
   byebug
   io-console (~> 0.8)
