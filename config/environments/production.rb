@@ -21,7 +21,7 @@ Rails.application.configure do
   # config.require_master_key = true
 
   # Disable serving static files from `public/`, relying on NGINX/Apache to do so instead.
-  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
+  config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
 
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
@@ -65,9 +65,9 @@ Rails.application.configure do
         span_id: correlation.span_id.to_s,
         env: correlation.env.to_s,
         service: correlation.service.to_s,
-        version: correlation.version.to_s,
+        version: correlation.version.to_s
       },
-      ddsource: ["ruby"],
+      ddsource: [ "ruby" ]
     }
   end
 

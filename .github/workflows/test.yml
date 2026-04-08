@@ -1,4 +1,4 @@
-name: Tests
+name: CI
 
 on:
   push:
@@ -25,8 +25,5 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Setup Application
-        run: bin/setup --skip-server
-
-      - name: Run Tests
-        run: bin/rails test
+      - name: Run CI
+        run: bin/ci
