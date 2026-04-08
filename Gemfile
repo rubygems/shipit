@@ -28,3 +28,4 @@ gem 'shipit-engine', '>= 0.36.0'
 
 gem 'datadog', '~> 2.0'
 gem 'dogstatsd-ruby', '~> 5.0'
+gem 'lograge'
