@@ -8,8 +8,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 0%
-      maxUnavailable: 50%
+      maxSurge: 100%
+      maxUnavailable: 0%
   selector:
     matchLabels:
       name: sidekiq
@@ -132,3 +132,8 @@ spec:
                 key: active_record_encryption_key_derivation_salt
         securityContext:
           privileged: false
+        lifecycle:
+          preStop:
+            exec:
+              command: ["sleep", "5"]
+      terminationGracePeriodSeconds: 300
