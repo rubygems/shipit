@@ -40,6 +40,11 @@ spec:
             scheme: HTTP
           initialDelaySeconds: 10
           periodSeconds: 15
+        readinessProbe:
+          tcpSocket:
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
         resources:
           requests:
             cpu: 500m
