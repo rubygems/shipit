@@ -15,8 +15,13 @@ spec:
       name: sidekiq
   template:
     metadata:
+      annotations:
+        ad.datadoghq.com/sidekiq.logs: '[{"source":"rails","service":"shipit","version":"<%= current_sha %>"}]'
       labels:
         name: sidekiq
+        tags.datadoghq.com/env: production
+        tags.datadoghq.com/service: shipit
+        tags.datadoghq.com/version: <%= current_sha %>
     spec:
       containers:
       - name: sidekiq
@@ -34,15 +39,22 @@ spec:
             value: "production"
           - name: ENV
             value: "production"
-          # - name: STATSD_IMPLEMENTATION
-          #   value: "datadog"
-          # - name: STATSD_HOST
-          #   valueFrom:
-          #     fieldRef:
-          #       apiVersion: v1
-          #       fieldPath: status.hostIP
-          # - name: STATSD_ADDR
-          #   value: $(STATSD_HOST):8125
+          - name: DD_AGENT_HOST
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: status.hostIP
+          - name: DD_TAGS
+            value: "service:shipit env:production"
+          - name: STATSD_IMPLEMENTATION
+            value: "datadog"
+          - name: STATSD_HOST
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: status.hostIP
+          - name: STATSD_ADDR
+            value: $(STATSD_HOST):8125
           - name: SECRET_KEY_BASE
             valueFrom:
               secretKeyRef:
