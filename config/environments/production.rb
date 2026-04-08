@@ -51,10 +51,25 @@ Rails.application.configure do
   # when problems arise.
   config.log_level = :debug
 
-  # Log to STDOUT by default
-  config.logger = ActiveSupport::Logger.new(STDOUT)
-    .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
-    .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
+  # Log to STDOUT with lograge in JSON format for Datadog log correlation
+  config.lograge.enabled = true
+  config.lograge.formatter = Lograge::Formatters::Json.new
+  config.colorize_logging = false
+  config.lograge.logger = ActiveSupport::Logger.new(STDOUT)
+  config.lograge.custom_options = lambda do |event|
+    correlation = Datadog::Tracing.correlation
+
+    {
+      dd: {
+        trace_id: correlation.trace_id.to_s,
+        span_id: correlation.span_id.to_s,
+        env: correlation.env.to_s,
+        service: correlation.service.to_s,
+        version: correlation.version.to_s,
+      },
+      ddsource: ["ruby"],
+    }
+  end
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]
