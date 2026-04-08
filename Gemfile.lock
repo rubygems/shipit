@@ -78,7 +78,7 @@ GEM
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
-    addressable (2.8.8)
+    addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
     ansi_stream (0.0.6)
     autoprefixer-rails (6.4.1.1)
@@ -178,8 +178,17 @@ GEM
     json (2.19.3)
     jwt (3.1.2)
       base64
+    libdatadog (29.0.0.1.0)
+    libdatadog (29.0.0.1.0-aarch64-linux)
     libdatadog (29.0.0.1.0-arm64-darwin)
+    libdatadog (29.0.0.1.0-x86_64-linux)
+    libddwaf (1.30.0.0.2-aarch64-linux)
+      ffi (~> 1.0)
     libddwaf (1.30.0.0.2-arm64-darwin)
+      ffi (~> 1.0)
+    libddwaf (1.30.0.0.2-x86_64-darwin)
+      ffi (~> 1.0)
+    libddwaf (1.30.0.0.2-x86_64-linux)
       ffi (~> 1.0)
     listen (3.10.0)
       logger
@@ -199,7 +208,6 @@ GEM
       net-smtp
     marcel (1.1.0)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.9)
     minitest (6.0.3)
       drb (~> 2.0)
       prism (~> 1.5)
@@ -220,9 +228,6 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.5)
-    nokogiri (1.19.2)
-      mini_portile2 (~> 2.8.2)
-      racc (~> 1.4)
     nokogiri (1.19.2-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.19.2-arm64-darwin)
@@ -263,7 +268,7 @@ GEM
     psych (5.3.1)
       date
       stringio
-    public_suffix (7.0.2)
+    public_suffix (7.0.5)
     pubsubstub (0.3.1)
       logger
       rack
@@ -424,7 +429,6 @@ GEM
 PLATFORMS
   aarch64-linux
   arm64-darwin
-  arm64-linux
   x86_64-darwin
   x86_64-linux
   x86_64-linux-musl
