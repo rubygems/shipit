@@ -7,7 +7,7 @@ if RUBY_VERSION >= "4.0"
   module Sprockets
     class ERBProcessor
       def call(input)
-        engine = ::ERB.new(input[:data], trim_mode: '<>')
+        engine = ::ERB.new(input[:data], trim_mode: "<>")
         context = input[:environment].context_class.new(input)
         klass = (class << context; self; end)
         klass.class_eval(&@block) if @block

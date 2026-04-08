@@ -1,6 +1,6 @@
 class PingController < ActionController::Base
   def ping
-    render plain: 'PONG'
+    render plain: "PONG"
   end
 
   def revision
@@ -10,6 +10,6 @@ class PingController < ActionController::Base
   private
 
   def __revision
-    File.read('REVISION')
+    File.read("REVISION")
   end
 end

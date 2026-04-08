@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class BasicTest < ActionDispatch::IntegrationTest
   test "root redirects to github auth" do
