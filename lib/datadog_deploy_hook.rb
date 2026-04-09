@@ -30,7 +30,7 @@ module DatadogDeployHook
 
     Datadog::Statsd.open(host, 8125) do |statsd|
       statsd.event(title, text, {
-        tags: [ "service:#{service}", "environment:#{environment}" ],
+        tags: [ "service:#{service}", "environment:#{environment}", "source:shipit-deploy" ],
         alert_type: "info",
         source_type_name: "shipit"
       })
