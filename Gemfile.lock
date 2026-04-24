@@ -123,7 +123,7 @@ GEM
     dogstatsd-ruby (5.7.1)
     drb (2.2.3)
     equalizer (0.0.11)
-    erb (6.0.2)
+    erb (6.0.4)
     erubi (1.13.1)
     execjs (2.10.0)
     explicit-parameters (0.4.2)
