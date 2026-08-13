@@ -27,7 +27,6 @@ updates:
       setup-ruby:
         patterns:
           - ruby/setup-ruby
-        group-by: dependency-name
       github-actions:
         patterns:
           - "*"
