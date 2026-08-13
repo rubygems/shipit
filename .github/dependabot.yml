@@ -1,10 +1,35 @@
 version: 2
 updates:
-- package-ecosystem: bundler
-  directory: "/"
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 99
-  ignore:
-    # TODO: Remove me when https://github.com/Shopify/shipit-engine/pull/1314 is resolved
-    - dependency-name: "omniauth-github"
+  - package-ecosystem: bundler
+    directory: "/"
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    ignore:
+      # TODO: Remove me when https://github.com/Shopify/shipit-engine/pull/1314 is resolved
+      - dependency-name: "omniauth-github"
+    groups:
+      bundler:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      setup-ruby:
+        patterns:
+          - ruby/setup-ruby
+      github-actions:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
