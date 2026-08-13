@@ -6,6 +6,9 @@ updates:
       interval: weekly
     cooldown:
       default-days: 7
+    ignore:
+      # TODO: Remove me when https://github.com/Shopify/shipit-engine/pull/1314 is resolved
+      - dependency-name: "omniauth-github"
     groups:
       bundler:
         patterns:
