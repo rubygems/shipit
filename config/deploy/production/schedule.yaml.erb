@@ -139,7 +139,247 @@ spec:
           containers:
           - name: hourly
             image: quay.io/rubygems/shipit:<%= current_sha %>
-            args: ["bin/rake", "cron:hourly"]
+            args: ["bin/rake", "cron:rollup", "cron:clear_stale_caches", "cron:delete_old_deployment_directories"]
+            resources:
+              requests:
+                cpu: 200m
+                memory: 1Gi
+              limits:
+                cpu: 500m
+                memory: 1.5Gi
+            env:
+              - name: RAILS_ENV
+                value: "production"
+              - name: ENV
+                value: "production"
+              # - name: STATSD_IMPLEMENTATION
+              #   value: "datadog"
+              # - name: STATSD_HOST
+              #   valueFrom:
+              #     fieldRef:
+              #       apiVersion: v1
+              #       fieldPath: status.hostIP
+              # - name: STATSD_ADDR
+              #   value: $(STATSD_HOST):8125
+              - name: SECRET_KEY_BASE
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: secret_key_base
+              - name: DATABASE_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: database_url
+              - name: REDIS_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: redis_url
+              - name: SHIPIT_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: shipit_host
+              - name: SHIPIT_HOME_DIR
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: shipit_home_dir
+              - name: GITHUB_OAUTH_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_oauth_id
+              - name: GITHUB_OAUTH_SECRET
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_oauth_secret
+              - name: GITHUB_APP_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_app_id
+              - name: GITHUB_INSTALLATION_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_installation_id
+              - name: GITHUB_WEBHOOK_SECRET
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_webhook_secret
+              - name: GITHUB_PRIVATE_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_private_key
+              - name: PREVIOUS_ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: previous_active_record_encryption_primary_key
+              - name: ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: active_record_encryption_primary_key
+              - name: ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: active_record_encryption_deterministic_key
+              - name: ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: active_record_encryption_key_derivation_salt
+            securityContext:
+              privileged: false
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: teams-fetch
+  labels:
+    name: teams-fetch
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "*/15 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            name: teams-fetch
+        spec:
+          restartPolicy: "OnFailure"
+          containers:
+          - name: teams-fetch
+            image: quay.io/rubygems/shipit:<%= current_sha %>
+            args: ["bin/rake", "teams:fetch"]
+            resources:
+              requests:
+                cpu: 200m
+                memory: 1Gi
+              limits:
+                cpu: 500m
+                memory: 1.5Gi
+            env:
+              - name: RAILS_ENV
+                value: "production"
+              - name: ENV
+                value: "production"
+              # - name: STATSD_IMPLEMENTATION
+              #   value: "datadog"
+              # - name: STATSD_HOST
+              #   valueFrom:
+              #     fieldRef:
+              #       apiVersion: v1
+              #       fieldPath: status.hostIP
+              # - name: STATSD_ADDR
+              #   value: $(STATSD_HOST):8125
+              - name: SECRET_KEY_BASE
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: secret_key_base
+              - name: DATABASE_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: database_url
+              - name: REDIS_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: redis_url
+              - name: SHIPIT_HOST
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: shipit_host
+              - name: SHIPIT_HOME_DIR
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: shipit_home_dir
+              - name: GITHUB_OAUTH_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_oauth_id
+              - name: GITHUB_OAUTH_SECRET
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_oauth_secret
+              - name: GITHUB_APP_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_app_id
+              - name: GITHUB_INSTALLATION_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_installation_id
+              - name: GITHUB_WEBHOOK_SECRET
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_webhook_secret
+              - name: GITHUB_PRIVATE_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: github_private_key
+              - name: PREVIOUS_ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: previous_active_record_encryption_primary_key
+              - name: ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: active_record_encryption_primary_key
+              - name: ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: active_record_encryption_deterministic_key
+              - name: ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT
+                valueFrom:
+                  secretKeyRef:
+                    name: production
+                    key: active_record_encryption_key_derivation_salt
+            securityContext:
+              privileged: false
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: refresh-users-daily
+  labels:
+    name: refresh-users-daily
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            name: refresh-users-daily
+        spec:
+          restartPolicy: "OnFailure"
+          containers:
+          - name: refresh-users-daily
+            image: quay.io/rubygems/shipit:<%= current_sha %>
+            args: ["bin/rake", "cron:refresh_users"]
             resources:
               requests:
                 cpu: 200m
