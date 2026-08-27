@@ -490,12 +490,12 @@ GEM
       sprockets-rails (>= 2.3.2)
       state_machines-activerecord (~> 0.8.0)
       validate_url (~> 1.0.0)
-    sidekiq (7.3.9)
+    sidekiq (7.3.10)
       base64
-      connection_pool (>= 2.3.0)
+      connection_pool (>= 2.3.0, < 3)
       logger
-      rack (>= 2.2.4)
-      redis-client (>= 0.22.2)
+      rack (>= 2.2.4, < 3.3)
+      redis-client (>= 0.23.0, < 1)
     signet (0.22.0)
       addressable (~> 2.8)
       faraday (>= 0.17.5, < 3.a)
@@ -562,7 +562,6 @@ DEPENDENCIES
   bigdecimal (~> 4.1)
   bootsnap (>= 1.4.2)
   byebug
-  connection_pool (< 3)
   csv (~> 3.3)
   datadog (~> 2.41)
   dogstatsd-ruby (~> 5.0)
@@ -580,7 +579,7 @@ DEPENDENCIES
   rubocop
   rubocop-rails-omakase
   shipit-engine (>= 0.36.0)
-  sidekiq
+  sidekiq (~> 7.3.10)
   web-console (>= 3.3.0)
 
 RUBY VERSION
