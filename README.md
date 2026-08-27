@@ -28,7 +28,8 @@ Production sets `SHIPIT_KUBERNETES_TASK_EXECUTOR=true` on Sidekiq. Each Shipit
 task is submitted as a standalone Kubernetes Job using the current Shipit image,
 so a rollout can replace Sidekiq without replacing the process supervising the
 deployment. The Jobs are created dynamically and are not part of the manifests
-managed by `krane deploy shipit`.
+managed by `krane deploy shipit`. They mount the existing `ejson-keys` Secret at
+`/opt/ejson/keys` so krane can decrypt the target environment's secrets.
 
 Set `SHIPIT_KUBERNETES_TASK_EXECUTOR=false` (or remove it) to restore Shipit
 Engine's default in-Sidekiq execution strategy without a code change.
@@ -41,11 +42,15 @@ can only create Jobs in the `shipit` namespace. The Jobs use the separate
 worker does not inherit permissions in application namespaces. Do not grant
 deployment access to the namespace's `default` ServiceAccount.
 
-Tasks deploy applications into several namespaces. Provision a least-privilege
-`shipit-deployer` ClusterRole for the resource kinds used by those applications,
-then create a RoleBinding to `shipit:shipit-task` in **each** allowed target
-namespace (`shipit`, `rubygems-staging`, and `rubygems-production`). A RoleBinding
-keeps the ClusterRole's permissions scoped to that one namespace. For example:
+Tasks deploy applications into several namespaces. Krane's pruning discovers
+all namespaced resource types, including custom resources, so the deployer must
+manage all namespaced resources. Bind the `shipit-deployer` ClusterRole to
+`shipit:shipit-task` only in each approved target namespace (`shipit`,
+`rubygems-staging`, and `rubygems-production`); the RoleBinding prevents those
+permissions from applying cluster-wide. Krane also needs to list namespaces
+while validating its Kubernetes context and inspect the API root and custom
+resource definitions during discovery, so grant those read-only, cluster-scoped
+permissions with a separate ClusterRoleBinding. For example:
 
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -53,21 +58,36 @@ kind: ClusterRole
 metadata:
   name: shipit-deployer
 rules:
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: shipit-discovery-reader
+rules:
   - apiGroups: [""]
-    resources: ["configmaps", "endpoints", "pods", "secrets", "services", "serviceaccounts"]
-    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-  - apiGroups: ["apps"]
-    resources: ["daemonsets", "deployments", "replicasets", "statefulsets"]
-    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-  - apiGroups: ["batch"]
-    resources: ["cronjobs", "jobs"]
-    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-  - apiGroups: ["networking.k8s.io"]
-    resources: ["ingresses"]
-    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-  - apiGroups: ["rbac.authorization.k8s.io"]
-    resources: ["rolebindings", "roles"]
-    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+    resources: ["namespaces"]
+    verbs: ["get", "list"]
+  - apiGroups: ["apiextensions.k8s.io"]
+    resources: ["customresourcedefinitions"]
+    verbs: ["get", "list"]
+  - nonResourceURLs: ["/"]
+    verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: shipit-discovery-reader
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: shipit-discovery-reader
+subjects:
+  - kind: ServiceAccount
+    name: shipit-task
+    namespace: shipit
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -84,7 +104,7 @@ subjects:
     namespace: shipit
 ```
 
-Keep the ClusterRole synchronized with the manifests Shipit actually deploys;
-do not substitute `cluster-admin`. Verify every namespace explicitly, for
-example with `kubectl auth can-i --as=system:serviceaccount:shipit:shipit-task
+Do not bind `shipit-deployer` with a ClusterRoleBinding or substitute
+`cluster-admin`. Verify every namespace explicitly, for example with `kubectl
+auth can-i --as=system:serviceaccount:shipit:shipit-task
 --namespace=TARGET_NAMESPACE --list`.

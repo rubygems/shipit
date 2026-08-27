@@ -67,11 +67,14 @@ class KubernetesTaskExecutionStrategyTest < ActiveSupport::TestCase
       pod_spec = job.dig("spec", "template", "spec")
       assert_equal "shipit-task", pod_spec.fetch("serviceAccountName")
       assert_equal "Never", pod_spec.fetch("restartPolicy")
+      assert_equal "ejson-keys", pod_spec.dig("volumes", 0, "secret", "secretName")
 
       container = pod_spec.fetch("containers").sole
       assert_equal "quay.io/rubygems/shipit:test-revision", container.fetch("image")
       assert_equal [ "bin/rails" ], container.fetch("command")
       assert_equal [ "shipit:task:run[#{task.id}]" ], container.fetch("args")
+      assert_equal "/opt/ejson/keys", container.dig("volumeMounts", 0, "mountPath")
+      assert_equal true, container.dig("volumeMounts", 0, "readOnly")
 
       env = container.fetch("env").index_by { |entry| entry.fetch("name") }
       %w[DATABASE_URL REDIS_URL GITHUB_PRIVATE_KEY SHIPIT_HOST SECRET_KEY_BASE].each do |name|

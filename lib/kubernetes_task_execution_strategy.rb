@@ -75,7 +75,13 @@ class KubernetesTaskExecutionStrategy < Shipit::TaskExecutionStrategy::Base
           "spec" => {
             "serviceAccountName" => "shipit-task",
             "restartPolicy" => "Never",
-            "containers" => [ container(revision) ]
+            "containers" => [ container(revision) ],
+            "volumes" => [
+              {
+                "name" => "ejson-keys",
+                "secret" => { "secretName" => "ejson-keys" }
+              }
+            ]
           }
         }
       }
@@ -93,6 +99,13 @@ class KubernetesTaskExecutionStrategy < Shipit::TaskExecutionStrategy::Base
         "limits" => { "cpu" => "1000m", "memory" => "2Gi" }
       },
       "env" => environment(revision),
+      "volumeMounts" => [
+        {
+          "name" => "ejson-keys",
+          "mountPath" => "/opt/ejson/keys",
+          "readOnly" => true
+        }
+      ],
       "securityContext" => { "privileged" => false }
     }
   end
