@@ -37,19 +37,15 @@ jobs:
             --bindings deployment_id=lint-deploy-id \
             -f lint-manifests > rendered-k8s.yaml
 
-      - name: Install kubeconform
-        shell: bash
-        run: |
-          set -euo pipefail
-          curl -sSL "https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz" -o kubeconform.tar.gz
-          tar -xzf kubeconform.tar.gz kubeconform
-          chmod +x kubeconform
+      - uses: jdx/mise-action@v4
+        with:
+          install_args: kubeconform
 
       - name: Lint Kubernetes manifests
         shell: bash
         run: |
           set -euo pipefail
-          ./kubeconform \
+          kubeconform \
             -strict \
             -summary \
             -kubernetes-version 1.34.0 \
