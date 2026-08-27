@@ -21,6 +21,7 @@ end
 
 group :development, :test do
   gem "byebug", platform: :mri
+  gem "krane", require: false
   gem "rubocop", require: false
   gem "rubocop-rails-omakase", require: false
 end

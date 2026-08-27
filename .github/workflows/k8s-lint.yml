@@ -22,19 +22,20 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
+          bundler-cache: true
 
-      - name: Render Kubernetes ERB templates
+      - name: Render Kubernetes manifests with krane
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p rendered-k8s
+          mkdir -p lint-manifests
+          cp config/deploy/production/*.yaml lint-manifests/
+          cp config/deploy/production/*.yaml.erb lint-manifests/
 
-          cp config/deploy/production/*.yaml rendered-k8s/
-
-          for template in config/deploy/production/*.yaml.erb; do
-            output="rendered-k8s/$(basename "${template%.erb}")"
-            ruby -rerb -e 'current_sha="lint-sha"; deployment_id="lint-deploy-id"; puts ERB.new(File.read(ARGV[0]), trim_mode: "-").result(binding)' "$template" > "$output"
-          done
+          bundle exec krane render \
+            --current-sha lint-sha \
+            --bindings deployment_id=lint-deploy-id \
+            -f lint-manifests > rendered-k8s.yaml
 
       - name: Install kubeconform
         shell: bash
@@ -48,9 +49,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mapfile -t manifests < <(find rendered-k8s -type f -name "*.yaml" | sort)
           ./kubeconform \
             -strict \
             -summary \
             -kubernetes-version 1.34.0 \
-            "${manifests[@]}"
+            rendered-k8s.yaml
