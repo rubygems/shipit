@@ -118,6 +118,9 @@ spec:
                     key: active_record_encryption_key_derivation_salt
             securityContext:
               privileged: false
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              runAsUser: 1000
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -238,6 +241,9 @@ spec:
                     key: active_record_encryption_key_derivation_salt
             securityContext:
               privileged: false
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              runAsUser: 1000
 ---
 apiVersion: batch/v1
 kind: CronJob
