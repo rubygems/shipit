@@ -8,6 +8,7 @@ gem "puma", "~> 8.0"
 gem "bootsnap", ">= 1.4.2", require: false
 gem "base64", "~> 0.3.0"
 gem "bigdecimal", "~> 4.1"
+gem "csv", "~> 3.3"
 gem "mutex_m", "~> 0.3.0" # Required by pubsubstub (via shipit-engine); no longer a default gem in Ruby 3.4+
 gem "json", "~> 2.21"
 gem "io-console", "~> 0.9"
