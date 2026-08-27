@@ -5,6 +5,8 @@ metadata:
   annotations:
     shipit.shopify.io/restart: 'true'
 spec:
+  minReadySeconds: 15
+  progressDeadlineSeconds: 600
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -23,10 +25,22 @@ spec:
         tags.datadoghq.com/service: shipit
         tags.datadoghq.com/version: <%= current_sha %>
     spec:
+      serviceAccountName: shipit-task-launcher
       containers:
       - name: sidekiq
         image: quay.io/rubygems/shipit:<%= current_sha %>
         args: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
+        readinessProbe:
+          exec:
+            command:
+              - /bin/sh
+              - -c
+              - >-
+                bundle exec rails runner 'exit(Sidekiq::ProcessSet.new.any? { |process| process["hostname"] == ENV["HOSTNAME"] } ? 0 : 1)'
+          initialDelaySeconds: 15
+          periodSeconds: 30
+          timeoutSeconds: 15
+          failureThreshold: 3
         resources:
           requests:
             cpu: 200m
@@ -39,6 +53,22 @@ spec:
             value: "production"
           - name: ENV
             value: "production"
+          - name: SHIPIT_KUBERNETES_TASK_EXECUTOR
+            value: "true"
+          - name: SHIPIT_TASK_EXECUTOR
+            value: "sidekiq"
+          - name: SHIPIT_TASK_IMAGE
+            value: "quay.io/rubygems/shipit:<%= current_sha %>"
+          - name: SHIPIT_TASK_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          - name: SHIPIT_TASK_POD_NAME
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.name
           - name: DD_AGENT_HOST
             valueFrom:
               fieldRef:

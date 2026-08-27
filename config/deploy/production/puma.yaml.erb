@@ -5,6 +5,8 @@ metadata:
   annotations:
     shipit.shopify.io/restart: 'true'
 spec:
+  minReadySeconds: 15
+  progressDeadlineSeconds: 600
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -41,8 +43,13 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 15
         readinessProbe:
-          tcpSocket:
+          httpGet:
+            path: /services/ping
             port: 3000
+            httpHeaders:
+            - name: X-Forwarded-Proto
+              value: https
+            scheme: HTTP
           initialDelaySeconds: 5
           periodSeconds: 5
         resources:
