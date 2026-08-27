@@ -27,6 +27,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 end
 
+gem "connection_pool", "< 3" # Sidekiq 7 passes a positional timeout removed in connection_pool 3
 gem "sidekiq"
 gem "shipit-engine", ">= 0.36.0"
 
