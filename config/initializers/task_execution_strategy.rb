@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
-if ActiveModel::Type::Boolean.new.cast(ENV["SHIPIT_KUBERNETES_TASK_EXECUTOR"])
-  Shipit.task_execution_strategy = KubernetesTaskExecutionStrategy
+Rails.application.config.after_initialize do
+  if ActiveModel::Type::Boolean.new.cast(ENV["SHIPIT_KUBERNETES_TASK_EXECUTOR"])
+    require Rails.root.join("lib/kubernetes_task_execution_strategy").to_s
+    Shipit.task_execution_strategy = KubernetesTaskExecutionStrategy
+  end
 end

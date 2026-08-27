@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "open3"
 require "tmpdir"
 require "yaml"
 
@@ -21,6 +22,18 @@ class KubernetesTaskExecutionStrategyTest < ActiveSupport::TestCase
     load Rails.root.join("config/initializers/task_execution_strategy.rb")
 
     assert_equal KubernetesTaskExecutionStrategy, Shipit.task_execution_strategy
+  end
+
+  test "boots with the Kubernetes strategy enabled" do
+    stdout, stderr, status = Open3.capture3(
+      { "RAILS_ENV" => "test", "SHIPIT_KUBERNETES_TASK_EXECUTOR" => "true" },
+      Rails.root.join("bin/rails").to_s,
+      "runner",
+      "puts Shipit.task_execution_strategy.name"
+    )
+
+    assert status.success?, stderr
+    assert_includes stdout, "KubernetesTaskExecutionStrategy"
   end
 
   test "preserves the default strategy when disabled" do
