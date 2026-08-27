@@ -1,0 +1,56 @@
+name: Kubernetes Lint
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+
+      - name: Render Kubernetes ERB templates
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p rendered-k8s
+
+          cp config/deploy/production/*.yaml rendered-k8s/
+
+          for template in config/deploy/production/*.yaml.erb; do
+            output="rendered-k8s/$(basename "${template%.erb}")"
+            ruby -rerb -e 'current_sha="lint-sha"; deployment_id="lint-deploy-id"; puts ERB.new(File.read(ARGV[0]), trim_mode: "-").result(binding)' "$template" > "$output"
+          done
+
+      - name: Install kubeconform
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -sSL "https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz" -o kubeconform.tar.gz
+          tar -xzf kubeconform.tar.gz kubeconform
+          chmod +x kubeconform
+
+      - name: Lint Kubernetes manifests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t manifests < <(find rendered-k8s -type f -name "*.yaml" | sort)
+          ./kubeconform \
+            -strict \
+            -summary \
+            -kubernetes-version 1.34.0 \
+            "${manifests[@]}"
