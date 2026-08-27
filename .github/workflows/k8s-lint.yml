@@ -1,0 +1,55 @@
+name: Kubernetes Lint
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Render Kubernetes manifests with krane
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p lint-manifests
+          cp config/deploy/production/*.yaml lint-manifests/
+          cp config/deploy/production/*.yaml.erb lint-manifests/
+
+          bundle exec krane render \
+            --current-sha lint-sha \
+            --bindings deployment_id=lint-deploy-id \
+            -f lint-manifests > rendered-k8s.yaml
+
+      - uses: jdx/mise-action@v4
+        with:
+          install_args: kubeconform
+      - name: Activate kubeconform
+        shell: bash
+        run: mise use -g kubeconform@0.8.0
+
+      - name: Lint Kubernetes manifests
+        shell: bash
+        run: |
+          set -euo pipefail
+          kubeconform \
+            -strict \
+            -summary \
+            -kubernetes-version 1.34.0 \
+            rendered-k8s.yaml
