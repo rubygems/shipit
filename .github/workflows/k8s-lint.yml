@@ -40,6 +40,9 @@ jobs:
       - uses: jdx/mise-action@v4
         with:
           install_args: kubeconform
+      - name: Activate kubeconform
+        shell: bash
+        run: mise use -g kubeconform@0.8.0
 
       - name: Lint Kubernetes manifests
         shell: bash
