@@ -579,7 +579,7 @@ DEPENDENCIES
   rubocop
   rubocop-rails-omakase
   shipit-engine (>= 0.36.0)
-  sidekiq (~> 7.3.10)
+  sidekiq (~> 7.0)
   web-console (>= 3.3.0)
 
 RUBY VERSION

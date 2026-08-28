@@ -27,7 +27,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 end
 
-gem "sidekiq", "~> 7.3.10"
+gem "sidekiq", "~> 7.0"
 gem "shipit-engine", ">= 0.36.0"
 
 gem "datadog", "~> 2.41"
