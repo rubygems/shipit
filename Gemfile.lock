@@ -115,10 +115,10 @@ GEM
     connection_pool (3.0.2)
     crass (1.0.7)
     csv (3.3.6)
-    datadog (2.41.0)
+    datadog (2.42.0)
       cgi
-      datadog-ruby_core_source (~> 3.5, >= 3.5.4)
-      libdatadog (~> 40.0.0.1.0)
+      datadog-ruby_core_source (~> 3.5, >= 3.5.5)
+      libdatadog (~> 40.0.0.2.0)
       libddwaf (~> 1.30.0.0.0)
       logger
       msgpack
@@ -234,10 +234,10 @@ GEM
       recursive-open-struct (~> 1.1, >= 1.1.1)
       rest-client (~> 2.0)
     language_server-protocol (3.17.0.6)
-    libdatadog (40.0.0.1.0)
-    libdatadog (40.0.0.1.0-aarch64-linux)
-    libdatadog (40.0.0.1.0-arm64-darwin)
-    libdatadog (40.0.0.1.0-x86_64-linux)
+    libdatadog (40.0.0.2.0)
+    libdatadog (40.0.0.2.0-aarch64-linux)
+    libdatadog (40.0.0.2.0-arm64-darwin)
+    libdatadog (40.0.0.2.0-x86_64-linux)
     libddwaf (1.30.0.0.2-aarch64-linux)
       ffi (~> 1.0)
     libddwaf (1.30.0.0.2-arm64-darwin)
@@ -567,7 +567,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   csv (~> 3.3)
-  datadog (~> 2.41)
+  datadog (~> 2.42)
   dogstatsd-ruby (~> 5.0)
   io-console (~> 0.9)
   json (~> 2.21)
