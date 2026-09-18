@@ -33,13 +33,11 @@ spec:
         readinessProbe:
           exec:
             command:
-              - /bin/sh
-              - -c
-              - >-
-                bundle exec rails runner 'require "sidekiq/api"; exit(Sidekiq::ProcessSet.new.any? { |process| process["hostname"] == ENV["HOSTNAME"] } ? 0 : 1)'
+              - cat
+              - /app/tmp/sidekiq-ready
           initialDelaySeconds: 15
           periodSeconds: 30
-          timeoutSeconds: 15
+          timeoutSeconds: 1
           failureThreshold: 3
         resources:
           requests:
