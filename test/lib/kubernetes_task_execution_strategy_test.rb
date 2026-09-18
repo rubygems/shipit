@@ -2,10 +2,13 @@
 
 require "test_helper"
 require "open3"
+require "rake"
 require "tmpdir"
 require "yaml"
 
 class KubernetesTaskExecutionStrategyTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
   setup do
     @original_setting = ENV["SHIPIT_KUBERNETES_TASK_EXECUTOR"]
     @original_strategy = Shipit.task_execution_strategy
@@ -83,6 +86,22 @@ class KubernetesTaskExecutionStrategyTest < ActiveSupport::TestCase
       assert_equal "status.hostIP", env.dig("DD_AGENT_HOST", "valueFrom", "fieldRef", "fieldPath")
       assert_equal "metadata.name", env.dig("SHIPIT_TASK_POD_NAME", "valueFrom", "fieldRef", "fieldPath")
     end
+  end
+
+  test "the standalone runner schedules output rollup after execution finishes" do
+    Rails.application.load_tasks unless Rake::Task.task_defined?("shipit:task:run")
+    task = shipit_tasks(:shipit)
+    task.update_columns(status: "success", rolled_up: false)
+
+    rake_task = Rake::Task["shipit:task:run"]
+    rake_task.reenable
+    original_adapter = ActiveJob::Base.queue_adapter
+    ActiveJob::Base.queue_adapter = :test
+    assert_enqueued_with(job: Shipit::ChunkRollupJob, args: [ task ]) do
+      rake_task.invoke(task.id)
+    end
+  ensure
+    ActiveJob::Base.queue_adapter = original_adapter if original_adapter
   end
 
   private
