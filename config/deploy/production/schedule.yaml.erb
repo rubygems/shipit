@@ -16,10 +16,16 @@ spec:
             name: minutely
         spec:
           restartPolicy: "OnFailure"
+          volumes:
+          - name: tmp
+            emptyDir: {}
           containers:
           - name: minutely
             image: quay.io/rubygems/shipit:<%= current_sha %>
             args: ["bin/rake", "cron:minutely"]
+            volumeMounts:
+            - name: tmp
+              mountPath: /tmp
             resources:
               requests:
                 cpu: 200m
@@ -139,10 +145,16 @@ spec:
             name: hourly
         spec:
           restartPolicy: "OnFailure"
+          volumes:
+          - name: tmp
+            emptyDir: {}
           containers:
           - name: hourly
             image: quay.io/rubygems/shipit:<%= current_sha %>
             args: ["bin/rake", "cron:rollup", "cron:clear_stale_caches", "cron:delete_old_deployment_directories"]
+            volumeMounts:
+            - name: tmp
+              mountPath: /tmp
             resources:
               requests:
                 cpu: 200m
@@ -262,10 +274,16 @@ spec:
             name: teams-fetch
         spec:
           restartPolicy: "OnFailure"
+          volumes:
+          - name: tmp
+            emptyDir: {}
           containers:
           - name: teams-fetch
             image: quay.io/rubygems/shipit:<%= current_sha %>
             args: ["bin/rake", "teams:fetch"]
+            volumeMounts:
+            - name: tmp
+              mountPath: /tmp
             resources:
               requests:
                 cpu: 200m
@@ -385,10 +403,16 @@ spec:
             name: refresh-users-daily
         spec:
           restartPolicy: "OnFailure"
+          volumes:
+          - name: tmp
+            emptyDir: {}
           containers:
           - name: refresh-users-daily
             image: quay.io/rubygems/shipit:<%= current_sha %>
             args: ["bin/rake", "cron:refresh_users"]
+            volumeMounts:
+            - name: tmp
+              mountPath: /tmp
             resources:
               requests:
                 cpu: 200m
