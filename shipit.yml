@@ -7,7 +7,9 @@ dependencies:
     - "true"
 ci:
   require:
-    - build
+    - Docker build amd64
+    - Docker build arm64
+    - Publish multi-arch manifest
 
 deploy:
   override:
