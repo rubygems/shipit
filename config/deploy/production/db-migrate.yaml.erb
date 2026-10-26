@@ -11,7 +11,7 @@ spec:
   restartPolicy: Never
   containers:
   - name: db-migrate
-    image: quay.io/rubygems/shipit:<%= current_sha %>
+    image: 048268392960.dkr.ecr.us-west-2.amazonaws.com/rubygems/shipit:<%= current_sha %>
     args: ["rails", "db:migrate"]
     env:
       - name: RAILS_ENV

@@ -1,4 +1,10 @@
 .git*
+**/.env
+**/.env.*
+**/.bundle
+**/.ssh
+**/*.key
+**/*.pem
 log/*
 tmp/*
 config/deploy/*

@@ -21,7 +21,7 @@ spec:
             emptyDir: {}
           containers:
           - name: minutely
-            image: quay.io/rubygems/shipit:<%= current_sha %>
+            image: 048268392960.dkr.ecr.us-west-2.amazonaws.com/rubygems/shipit:<%= current_sha %>
             args: ["bin/rake", "cron:minutely"]
             volumeMounts:
             - name: tmp
@@ -150,7 +150,7 @@ spec:
             emptyDir: {}
           containers:
           - name: hourly
-            image: quay.io/rubygems/shipit:<%= current_sha %>
+            image: 048268392960.dkr.ecr.us-west-2.amazonaws.com/rubygems/shipit:<%= current_sha %>
             args: ["bin/rake", "cron:rollup", "cron:clear_stale_caches", "cron:delete_old_deployment_directories"]
             volumeMounts:
             - name: tmp
@@ -279,7 +279,7 @@ spec:
             emptyDir: {}
           containers:
           - name: teams-fetch
-            image: quay.io/rubygems/shipit:<%= current_sha %>
+            image: 048268392960.dkr.ecr.us-west-2.amazonaws.com/rubygems/shipit:<%= current_sha %>
             args: ["bin/rake", "teams:fetch"]
             volumeMounts:
             - name: tmp
@@ -408,7 +408,7 @@ spec:
             emptyDir: {}
           containers:
           - name: refresh-users-daily
-            image: quay.io/rubygems/shipit:<%= current_sha %>
+            image: 048268392960.dkr.ecr.us-west-2.amazonaws.com/rubygems/shipit:<%= current_sha %>
             args: ["bin/rake", "cron:refresh_users"]
             volumeMounts:
             - name: tmp
