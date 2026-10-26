@@ -11,26 +11,47 @@ on:
       - master
 
 concurrency:
-  group: production_deploy
-  cancel-in-progress: true
+  group: docker-image-${{ github.event.workflow_run.head_sha || github.sha }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  IMAGE: 048268392960.dkr.ecr.us-west-2.amazonaws.com/rubygems/shipit
+  REVISION: ${{ github.event.workflow_run.head_sha || github.sha }}
 
 jobs:
   build:
+    if: >-
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master') ||
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_branch == 'master')
     runs-on: ubuntu-26.04
 
     steps:
     - uses: actions/checkout@v7
+      with:
+        ref: ${{ env.REVISION }}
+        persist-credentials: false
 
     - name: Set REVISION
-      run: echo "${{ github.sha }}" > REVISION
+      run: echo "$REVISION" > REVISION
 
     - name: Build the Docker image
-      run: docker build . --tag quay.io/rubygems/shipit:${{ github.sha }}
+      run: docker build . --tag "$IMAGE:$REVISION"
 
-    - name: Docker login
-      if: github.ref == 'refs/heads/master'
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin quay.io
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+      with:
+        role-to-assume: arn:aws:iam::048268392960:role/shipit-ecr-pusher
+        aws-region: us-west-2
+
+    - name: Login to Amazon ECR
+      uses: aws-actions/amazon-ecr-login@03f1aad4c6c7ffd436567f42f9384779290529bd # v2.1.7
 
     - name: Push Docker image
-      if: github.ref == 'refs/heads/master'
-      run: docker push quay.io/rubygems/shipit:${{ github.sha }}
+      run: docker push "$IMAGE:$REVISION"

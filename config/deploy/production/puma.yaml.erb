@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
       - name: puma
-        image: quay.io/rubygems/shipit:<%= current_sha %>
+        image: 048268392960.dkr.ecr.us-west-2.amazonaws.com/rubygems/shipit:<%= current_sha %>
         args: ["bundle", "exec", "puma"]
         ports:
         - containerPort: 3000
