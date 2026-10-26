@@ -55,6 +55,7 @@ Rails.application.configure do
   config.lograge.enabled = true
   config.lograge.formatter = Lograge::Formatters::Json.new
   config.colorize_logging = false
+  config.logger = ActiveSupport::TaggedLogging.logger(STDOUT)
   config.lograge.logger = ActiveSupport::Logger.new(STDOUT)
   config.lograge.custom_options = lambda do |event|
     correlation = Datadog::Tracing.correlation
@@ -79,8 +80,9 @@ Rails.application.configure do
   # want to log everything, set the level to "debug".
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
-  # Use a different cache store in production.
-  # config.cache_store = :mem_cache_store
+  # Share cached GitHub status and tokens between cron, web, and worker pods
+  # without writing to the read-only application filesystem.
+  config.cache_store = :redis_cache_store, { url: ENV["REDIS_URL"], namespace: "shipit:cache" }
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter = :resque
