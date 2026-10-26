@@ -36,7 +36,8 @@ RUN apk --update add \
 
 COPY . /app
 
-ADD https://dl.k8s.io/release/v$KUBECTL_VERSION/bin/linux/amd64/kubectl /usr/bin/kubectl
+ARG TARGETARCH
+ADD https://dl.k8s.io/release/v$KUBECTL_VERSION/bin/linux/$TARGETARCH/kubectl /usr/bin/kubectl
 RUN chmod +x /usr/bin/kubectl
 
 COPY kubeconfig.yml /root/.kube/config
