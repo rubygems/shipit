@@ -5,6 +5,7 @@ metadata:
   annotations:
     shipit.shopify.io/restart: 'true'
 spec:
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:

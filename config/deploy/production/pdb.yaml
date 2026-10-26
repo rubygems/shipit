@@ -1,0 +1,25 @@
+# With two Ready replicas per Deployment, one may be voluntarily evicted.
+# If only one replica is Ready, its eviction is blocked. These budgets do not
+# protect against node failure or guarantee application-level availability.
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: puma
+spec:
+  minAvailable: 1
+  # Do not let an already-unready pod block node maintenance.
+  unhealthyPodEvictionPolicy: AlwaysAllow
+  selector:
+    matchLabels:
+      name: puma
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: sidekiq
+spec:
+  minAvailable: 1
+  unhealthyPodEvictionPolicy: AlwaysAllow
+  selector:
+    matchLabels:
+      name: sidekiq
