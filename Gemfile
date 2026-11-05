@@ -10,7 +10,7 @@ gem "base64", "~> 0.3.0"
 gem "bigdecimal", "~> 4.1"
 gem "csv", "~> 3.3"
 gem "mutex_m", "~> 0.3.0" # Required by pubsubstub (via shipit-engine); no longer a default gem in Ruby 3.4+
-gem "json", "~> 2.21" # Sprockets 3 requires create_additions, removed in JSON 3
+gem "json", "~> 3.1" # Sprockets 3 requires create_additions, removed in JSON 3
 gem "io-console", "~> 0.9"
 gem "minitest", "~> 6.0"
 gem "ostruct"
