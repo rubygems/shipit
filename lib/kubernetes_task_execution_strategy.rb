@@ -24,6 +24,19 @@ class KubernetesTaskExecutionStrategy < Shipit::TaskExecutionStrategy::Base
     "ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT" => "active_record_encryption_key_derivation_salt"
   }.freeze
 
+  STARTUP_TIMEOUT = 10.minutes
+
+  # The Job's runner moves its task out of `pending` first. A task still pending after the
+  # timeout has no runner (image pull or boot failure, lost submission). Shipit Engine only
+  # reaps running tasks, so fail it here to unblock its stack. A Job that starts late finds
+  # the task no longer pending and exits without deploying.
+  def self.reap_unstarted_tasks
+    Shipit::Task.where(status: "pending", created_at: ..STARTUP_TIMEOUT.ago).find_each do |task|
+      task.write("ERROR: Kubernetes Job shipit-task-#{task.id} did not start the task within #{STARTUP_TIMEOUT.inspect}.\n")
+      task.error!
+    end
+  end
+
   def execute
     _stdout, stderr, status = Open3.capture3(
       "kubectl", "create", "--namespace", namespace, "-f", "-",

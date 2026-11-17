@@ -19,7 +19,7 @@ spec:
           containers:
           - name: minutely
             image: quay.io/rubygems/shipit:<%= current_sha %>
-            args: ["bin/rake", "cron:minutely"]
+            args: ["bin/rake", "cron:minutely", "shipit:task:reap_unstarted"]
             resources:
               requests:
                 cpu: 200m

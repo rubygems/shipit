@@ -12,5 +12,10 @@ namespace :shipit do
       # transition so standalone task Jobs reliably persist their output.
       task.reload.schedule_rollup_chunks if task.finished? && !task.rolled_up?
     end
+
+    desc "Fail tasks that the configured execution strategy never started"
+    task reap_unstarted: :environment do
+      ReapUnstartedTasksJob.perform_later
+    end
   end
 end
