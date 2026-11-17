@@ -121,8 +121,9 @@ class KubernetesTaskExecutionStrategy < Shipit::TaskExecutionStrategy::Base
       value("DD_VERSION", revision),
       value("DD_TAGS", "service:shipit env:production version:#{revision}"),
       value("STATSD_IMPLEMENTATION", "datadog"),
-      value("STATSD_ADDR", "$(DD_AGENT_HOST):8125"),
+      # Kubernetes only expands $(VAR) for variables defined earlier in this list.
       field("DD_AGENT_HOST", "status.hostIP"),
+      value("STATSD_ADDR", "$(DD_AGENT_HOST):8125"),
       field("SHIPIT_TASK_POD_NAME", "metadata.name"),
       field("SHIPIT_TASK_JOB_NAME", "metadata.labels['batch.kubernetes.io/job-name']"),
       *SECRET_ENV.map { |name, key| secret(name, key) }

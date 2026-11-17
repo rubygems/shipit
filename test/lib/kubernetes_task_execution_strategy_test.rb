@@ -85,6 +85,11 @@ class KubernetesTaskExecutionStrategyTest < ActiveSupport::TestCase
       end
       assert_equal "status.hostIP", env.dig("DD_AGENT_HOST", "valueFrom", "fieldRef", "fieldPath")
       assert_equal "metadata.name", env.dig("SHIPIT_TASK_POD_NAME", "valueFrom", "fieldRef", "fieldPath")
+
+      # Kubernetes only expands $(VAR) references to variables defined earlier in the list.
+      names = container.fetch("env").map { |entry| entry.fetch("name") }
+      assert_equal "$(DD_AGENT_HOST):8125", env.dig("STATSD_ADDR", "value")
+      assert_operator names.index("DD_AGENT_HOST"), :<, names.index("STATSD_ADDR")
     end
   end
 
