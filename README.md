@@ -8,6 +8,9 @@ Shipit needs MySQL database to be running. You can copy `config/database.yml.sam
 
 ## Running tests
 
+Tests also need Redis, which holds task output. `docker compose up -d --wait`
+starts both MySQL and Redis.
+
 Once ready MySQL setup is ready, you can run tests using standard rails commands.
 
 1. initialize DB (needed only once)

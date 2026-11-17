@@ -93,6 +93,31 @@ class KubernetesTaskExecutionStrategyTest < ActiveSupport::TestCase
     end
   end
 
+  test "a redelivered submission leaves the task to its existing Job" do
+    task = shipit_tasks(:shipit)
+    task.update_columns(status: "running")
+    already_exists = %(Error from server (AlreadyExists): error when creating "STDIN": ) +
+      %(jobs.batch "shipit-task-#{task.id}" already exists)
+
+    with_failing_kubectl(already_exists) do
+      KubernetesTaskExecutionStrategy.new(task).execute
+    end
+
+    assert_equal "running", task.reload.status
+  end
+
+  test "a failed submission errors the task" do
+    task = shipit_tasks(:shipit)
+    task.update_columns(status: "pending")
+    forbidden = %(Error from server (Forbidden): error when creating "STDIN": jobs.batch is forbidden)
+
+    with_failing_kubectl(forbidden) do
+      KubernetesTaskExecutionStrategy.new(task).execute
+    end
+
+    assert_equal "error", task.reload.status
+  end
+
   test "the standalone runner schedules output rollup after execution finishes" do
     Rails.application.load_tasks unless Rake::Task.task_defined?("shipit:task:run")
     task = shipit_tasks(:shipit)
@@ -111,7 +136,14 @@ class KubernetesTaskExecutionStrategyTest < ActiveSupport::TestCase
 
   private
 
-  def with_capturing_kubectl
+  def with_failing_kubectl(stderr, &)
+    with_capturing_kubectl(<<~SH, &)
+      echo '#{stderr}' >&2
+      exit 1
+    SH
+  end
+
+  def with_capturing_kubectl(outcome = "")
     Dir.mktmpdir do |directory|
       manifest_path = File.join(directory, "manifest.yml")
       arguments_path = File.join(directory, "arguments")
@@ -120,6 +152,7 @@ class KubernetesTaskExecutionStrategyTest < ActiveSupport::TestCase
         #!/bin/sh
         cat > "$KUBECTL_CAPTURE"
         printf '%s\n' "$@" > "$KUBECTL_ARGUMENTS_CAPTURE"
+        #{outcome}
       SH
       File.chmod(0o755, kubectl_path)
 

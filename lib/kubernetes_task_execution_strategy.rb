@@ -29,7 +29,10 @@ class KubernetesTaskExecutionStrategy < Shipit::TaskExecutionStrategy::Base
       "kubectl", "create", "--namespace", namespace, "-f", "-",
       stdin_data: JSON.generate(job)
     )
-    raise SubmissionError, "kubectl failed to create task Job: #{stderr.strip}" unless status.success?
+    # A redelivered submission finds the Job it already created, which owns the task's state.
+    return if status.success? || stderr.include?("(AlreadyExists)")
+
+    raise SubmissionError, "kubectl failed to create task Job: #{stderr.strip}"
   rescue => error
     task.report_error!(error)
   end
