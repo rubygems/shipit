@@ -12,7 +12,7 @@ gem "csv", "~> 3.3"
 gem "mutex_m", "~> 0.3.0" # Required by pubsubstub (via shipit-engine); no longer a default gem in Ruby 3.4+
 gem "json", "~> 2.21" # Sprockets 3 requires create_additions, removed in JSON 3
 gem "io-console", "~> 0.9"
-gem "minitest", "~> 6.0"
+gem "minitest", "~> 6.1"
 gem "ostruct"
 
 group :development do
@@ -30,6 +30,6 @@ end
 gem "sidekiq"
 gem "shipit-engine", ">= 0.36.0"
 
-gem "datadog", "~> 2.47"
+gem "datadog", "~> 2.48"
 gem "dogstatsd-ruby", "~> 5.0"
 gem "lograge"
