@@ -4,7 +4,7 @@ ruby file: ".ruby-version"
 
 gem "rails", "~> 8.1.4"
 gem "mysql2"
-gem "puma", "~> 8.0"
+gem "puma", "~> 8.1"
 gem "bootsnap", ">= 1.4.2", require: false
 gem "base64", "~> 0.3.0"
 gem "bigdecimal", "~> 4.1"
@@ -30,6 +30,6 @@ end
 gem "sidekiq"
 gem "shipit-engine", ">= 0.36.0"
 
-gem "datadog", "~> 2.48"
+gem "datadog", "~> 2.49"
 gem "dogstatsd-ruby", "~> 5.0"
 gem "lograge"
